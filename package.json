@@ -1,0 +1,39 @@
+{
+  "name": "lcd",
+  "version": "0.0.1",
+  "description": "Hitachi HD44780 LCD driver",
+  "main": "lcd.js",
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Tests can only be run manually from the command line. They access hardware GPIOs.\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fivdi/lcd.git"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "dependencies": {
+    "onoff": "~0.2.3",
+    "q": "~0.9.7"
+  },
+  "keywords": [
+    "lcd",
+    "hd44780",
+    "beaglebone",
+    "bbb",
+    "bb",
+    "raspberry",
+    "raspi",
+    "rpi",
+    "pi",
+    "linux"
+  ],
+  "author": "fivdi",
+  "license": "MIT"
+}
+
