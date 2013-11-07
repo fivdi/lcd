@@ -8,3 +8,9 @@ lcd.on('ready', function () {
   }, 1000);
 });
 
+// If ctrl+c is hit, free resources and exit.
+process.on('SIGINT', function () {
+  lcd.close();
+  process.exit();
+});
+

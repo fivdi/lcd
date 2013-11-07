@@ -24,6 +24,7 @@ function fillDisplay(charCode) {
       time = process.hrtime(time);
       fillsPerSec  = Math.floor(256 / (time[0] + time[1] / 1E9));
       console.log(fillsPerSec + ' display fills per second');
+      lcd.close();
     }
   });
 }
