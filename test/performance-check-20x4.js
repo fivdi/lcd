@@ -19,7 +19,7 @@ function fillDisplay(charCode) {
 
     charCode += 1;
     if (charCode < 256) {
-      fillDisplay(charCode)
+      fillDisplay(charCode);
     } else {
       time = process.hrtime(time);
       fillsPerSec  = Math.floor(256 / (time[0] + time[1] / 1E9));
