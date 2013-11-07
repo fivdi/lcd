@@ -1,4 +1,4 @@
-var Lcd = require('./lcd'),
+var Lcd = require('../lcd'),
   lcd = new Lcd({rs:45, e:44, data:[66, 67, 68, 69], cols:20, rows:4});
 
 lcd.on('ready', function () {
