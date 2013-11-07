@@ -46,12 +46,12 @@ following table:
 
 BBB Expansion Header | GPIO No. | Function | LCD Pin No.
 :---: | :---: | :---: | ---:
-P8_13 23 D4  11
-P8_14 26 D5  12
-P8_15 47 D7  14
-P8_16 46 D6  13
-P8_17 27 RS  4
-P8_18 65 E   6
+P8_13 | 23 | D4 | 11
+P8_14 | 26 | D5 | 12
+P8_15 | 47 | D7 | 14
+P8_16 | 46 | D6 | 13
+P8_17 | 27 | RS |  4
+P8_18 | 65 | E  |  6
 
 The constructor function is also told how many columns and rows the display
 has, eight and one respectively in this case.
