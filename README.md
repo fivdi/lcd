@@ -129,7 +129,7 @@ shift.
 
 "Hello, World!" is five characters too long for an 8x1 display, but by moving
 the cursor to the ninth column, turning autoscroll on, and displaying a new
-character every 300 milliseconds the test can be scrolled onto the screen
+character every 300 milliseconds the text can be scrolled onto the screen
 character by character. Note that an 8x1 display actually has eighty columns
 but only eight of them are visible.
 
