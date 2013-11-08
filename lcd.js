@@ -12,7 +12,7 @@ function Lcd(config) {
 
   this.cols = config.cols || 16; // TODO - Never used, remove?
   this.rows = config.rows || 1;
-  this.largeFont = config.largeFont | false;
+  this.largeFont = !!config.largeFont;
 
   this.rs = new Gpio(config.rs, 'low'); // reg. select, output, initially low
   this.e = new Gpio(config.e, 'low'); // enable, output, initially low
@@ -31,6 +31,7 @@ function Lcd(config) {
 util.inherits(Lcd, EventEmitter);
 module.exports = Lcd;
 
+// private
 Lcd.prototype.init = function init() {
   // TODO - This method doesn't look the best, improve it.
   // TODO - Findout out how precise delay/setTimeout are.

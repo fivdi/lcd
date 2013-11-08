@@ -4,8 +4,8 @@ A Node.js Hitachi HD44780 LCD driver for Linux boards such as the BeagleBone or
 Raspberry Pi. Heavily inspired by the Arduino
 [LiquidCrystal library](http://arduino.cc/en/Tutorial/LiquidCrystal).
 
-LCDs compatible with the HD44780 have a sixteen pin interface. This Node.js
-module uses six of these interface pins for controlling such displays.
+Most LCDs compatible with the HD44780 have a sixteen pin interface. This
+Node.js module uses six of these interface pins for controlling such displays.
 Register select (RS), enable (E), and four data bus pins (D4-D7). The
 read/write (R/W) pin is assumed to be tied low to permanently select write
 mode.
@@ -77,5 +77,82 @@ process.on('SIGINT', function () {
 
 ## API
 
-API documentation will be added here asap.
+**Lcd(config)**
+
+Returns a new Lcd object. A 'ready' event will be emitted when the display is
+ready for usage.
+
+The config object has these possibilities:
+
+ * **cols** LCD column count. Defaults to 16.
+ * **rows** LCD row count. Defaults to 1.
+ * **largeFont** Use 5x10 dot font. Defaults to false for 5x8 dot font.
+ * **rs** Register select GPIO number.
+ * **e** Enable GPIO number.
+ * **data** Array of 4 GPIO numbers for data bus bits D4 through D7.
+
+**print(val)**
+
+Converts val to string and write it to display.
+
+**clear()**
+
+Clears display and returns cursor to the home position. A 'clear' event will
+be emitted after the operation has completed.
+
+**home()**
+
+Returns cursor to home position. Also returns display being shifted to the
+original position. A 'home' event will be emitted after the operation has
+completed.
+
+**setCursor(col, row)**
+
+Moves the cursor to the specified col and row. Numbering for col and row starts
+at 0.
+
+**cursor()**
+
+Turn cursor on.
+
+**noCursor()**
+
+Turn cursor off.
+
+**blink()**
+
+Turn cursor blink on.
+
+**noBlink()**
+
+Turn cursor blink off.
+
+**scrollDisplayLeft()**
+
+Shift display to the left. Cursor follows the display shift.
+
+**scrollDisplayRight()**
+
+Shift display to the right. Cursor follows the display shift.
+
+**leftToRight()**
+
+Sets cursor move direction to left to right.
+
+**rightToLeft()**
+
+Sets cursor move direction to right to left.
+
+**autoscroll**
+
+Automatically shift display when data is written to display.
+
+**noAutoscroll**
+
+Turn automatic shifting off.
+
+## Tested with the following displays
+
+[NHD-0108FZ-FL-YBW-33V3](http://www.newhavendisplay.com/nhd0108fzflybw33v3-p-5155.html)
+[NHD-0420DZ-FL-YBW-33V3](http://www.newhavendisplay.com/nhd0420dzflybw33v3-p-5168.html)
 
