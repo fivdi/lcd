@@ -143,11 +143,11 @@ Sets cursor move direction to left to right.
 
 Sets cursor move direction to right to left.
 
-**autoscroll**
+**autoscroll()**
 
 Automatically shift display when data is written to display.
 
-**noAutoscroll**
+**noAutoscroll()**
 
 Turn automatic shifting off.
 
