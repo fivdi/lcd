@@ -144,7 +144,7 @@ lcd.on('ready', function () {
 });
 
 function print(str, pos) {
-  pos = pos | 0;
+  pos = pos || 0;
 
   if (pos === str.length) {
     pos = 0;
