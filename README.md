@@ -58,7 +58,7 @@ has, eight and one respectively in this case.
 
 It takes several milliseconds to initialize an LCD. The constructor starts the
 initialization process, but it doesn't wait around for it to complete. Instead,
-a 'ready' event is fired after the LCD has been completely initialized and is
+a 'ready' event is emitted after the LCD has been completely initialized and is
 ready for usage.
 
 The 'ready' handler leverages setInterval to execute a function that updates
@@ -84,75 +84,83 @@ ready for usage.
 
 The config object has these possibilities:
 
- * **cols** LCD column count. Defaults to 16.
- * **rows** LCD row count. Defaults to 1.
+ * **cols** LCD column count. Defaults to sixteen.
+ * **rows** LCD row count. Defaults to one.
  * **largeFont** Use 5x10 dot font. Defaults to false for 5x8 dot font.
  * **rs** Register select GPIO number.
  * **e** Enable GPIO number.
- * **data** Array of 4 GPIO numbers for data bus bits D4 through D7.
+ * **data** Array of four GPIO numbers for data bus bits D4 through D7.
 
-**print(val)**
+**print(val)** Converts val to string and write it to display.
 
-Converts val to string and write it to display.
+**clear()** Clears display and returns cursor to the home position. A 'clear'
+event will be emitted after the operation has completed.
 
-**clear()**
+**home()** Returns cursor to home position. Also returns display being shifted
+to the original position. A 'home' event will be emitted after the operation
+has completed.
 
-Clears display and returns cursor to the home position. A 'clear' event will
-be emitted after the operation has completed.
+**setCursor(col, row)** Moves the cursor to the specified col and row.
+Numbering for col and row starts at zero.
 
-**home()**
+**cursor()** Turn cursor on.
 
-Returns cursor to home position. Also returns display being shifted to the
-original position. A 'home' event will be emitted after the operation has
-completed.
+**noCursor()** Turn cursor off.
 
-**setCursor(col, row)**
+**blink()** Turn cursor blink on.
 
-Moves the cursor to the specified col and row. Numbering for col and row starts
-at 0.
+**noBlink()** Turn cursor blink off.
 
-**cursor()**
+**scrollDisplayLeft()** Shift display to the left. Cursor follows the display
+shift.
 
-Turn cursor on.
+**scrollDisplayRight()** Shift display to the right. Cursor follows the display
+shift.
 
-**noCursor()**
+**leftToRight()** Sets cursor move direction to left to right.
 
-Turn cursor off.
+**rightToLeft()** Sets cursor move direction to right to left.
 
-**blink()**
+**autoscroll()** Automatically shift display when data is written to display.
 
-Turn cursor blink on.
+**noAutoscroll()** Turn automatic shifting off.
 
-**noBlink()**
+## Example "Hello, World!" on an 8x1 display
 
-Turn cursor blink off.
+"Hello, World!" is five characters too long for an 8x1 display, but by moving
+the cursor to the ninth column, turning autoscroll on, and displaying a new
+character every 300 milliseconds the test can be scrolled onto the screen
+character by character. Note that an 8x1 display actually has eighty columns
+but only eight of them are visible.
 
-**scrollDisplayLeft()**
+```js
+var Lcd = require('../lcd'),
+  lcd = new Lcd({rs:27, e:65, data:[23, 26, 46, 47], cols:8, rows:1});
 
-Shift display to the left. Cursor follows the display shift.
+lcd.on('ready', function () {
+  lcd.setCursor(8, 0);
+  lcd.autoscroll();
+  print('Hello, World! ** ');
+});
 
-**scrollDisplayRight()**
+function print(str, pos) {
+  pos = pos | 0;
 
-Shift display to the right. Cursor follows the display shift.
+  if (pos === str.length) {
+    pos = 0;
+  }
 
-**leftToRight()**
+  lcd.print(str[pos]);
 
-Sets cursor move direction to left to right.
-
-**rightToLeft()**
-
-Sets cursor move direction to right to left.
-
-**autoscroll()**
-
-Automatically shift display when data is written to display.
-
-**noAutoscroll()**
-
-Turn automatic shifting off.
+  setTimeout(function () {
+    print(str, pos + 1);
+  }, 300);
+}
+```
 
 ## Tested with the following displays
 
 [NHD-0108FZ-FL-YBW-33V3](http://www.newhavendisplay.com/nhd0108fzflybw33v3-p-5155.html)
+
 [NHD-0420DZ-FL-YBW-33V3](http://www.newhavendisplay.com/nhd0420dzflybw33v3-p-5168.html)
 

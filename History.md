@@ -1,3 +1,10 @@
+0.0.3 - Nov 08 2013
+===================
+
+  * Example "Hello, World!" on an 8x1 display
+  * Lcd constructor is now new-agnostic
+  * API documentation
+
 0.0.2 - Nov 07 2013
 ===================
 

@@ -8,6 +8,10 @@ var EventEmitter = require('events').EventEmitter,
 function Lcd(config) {
   var i;
 
+  if (!(this instanceof Lcd)) {
+    return new Lcd(config);
+  }
+
   EventEmitter.call(this);
 
   this.cols = config.cols || 16; // TODO - Never used, remove?
