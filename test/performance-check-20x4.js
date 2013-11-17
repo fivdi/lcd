@@ -3,7 +3,8 @@
  * can be filled per second.
  */
 var Lcd = require('../lcd'),
-  lcd = new Lcd({rs:45, e:44, data:[66, 67, 68, 69], cols:20, rows:4}),
+  lcd = new Lcd({rs:45, e:44, data:[66, 67, 68, 69], cols:20, rows:4}), // BBB
+  // lcd = new Lcd({rs:23, e:24, data:[17, 18, 22, 27], cols:20, rows:4}), // Pi
   time;
 
 lcd.on('ready', function () {

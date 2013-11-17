@@ -65,13 +65,12 @@ Lcd.prototype.init = function init() {
 
 Lcd.prototype.print = function(val) {
   var str = val.toString(),
-    i, c;
+    i;
 
   this.rs.writeSync(1);
 
   for (i = 0; i != str.length; ++i) {
-    c = str.charCodeAt(i);
-    this.write(c);
+    this.write(str.charCodeAt(i));
   }
 };
 

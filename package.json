@@ -24,6 +24,7 @@
   "keywords": [
     "lcd",
     "hd44780",
+    "gpio",
     "beaglebone",
     "bbb",
     "bb",

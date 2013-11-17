@@ -32,7 +32,7 @@ lcd.on('ready', function () {
 });
 ```
 
-Here it is up and running on a BeagleBone Black wired up to an 8 x 1 display:
+Here it is up and running on a BeagleBone Black wired up to an 8x1 display:
 
 <img src="https://github.com/fivdi/lcd/raw/master/example/digital-clock-8x1.jpg">
 
@@ -57,7 +57,7 @@ The constructor function is also told how many columns and rows the display
 has, eight and one respectively in this case.
 
 It takes several milliseconds to initialize an LCD. The constructor starts the
-initialization process, but it doesn't wait around for it to complete. Instead,
+initialization process, but it doesn't wait for it to complete. Instead,
 a 'ready' event is emitted after the LCD has been completely initialized and is
 ready for usage.
 
@@ -129,7 +129,7 @@ shift.
 
 "Hello, World!" is five characters too long for an 8x1 display, but by moving
 the cursor to the ninth column, turning autoscroll on, and displaying a new
-character every 300 milliseconds the text can be scrolled onto the screen
+character every 300 milliseconds the text can be scrolled onto the display
 character by character. Note that an 8x1 display actually has eighty columns
 but only eight of them are visible.
 
