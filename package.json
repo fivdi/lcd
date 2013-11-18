@@ -1,6 +1,6 @@
 {
   "name": "lcd",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "Hitachi HD44780 LCD driver",
   "main": "lcd.js",
   "directories": {
@@ -18,7 +18,7 @@
     "node": ">=0.8.0"
   },
   "dependencies": {
-    "onoff": "~0.2.3",
+    "onoff": "~0.3.0",
     "q": "~0.9.7"
   },
   "keywords": [
