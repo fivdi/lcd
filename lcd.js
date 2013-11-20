@@ -166,16 +166,11 @@ Lcd.prototype.close = function() {
 // private
 Lcd.prototype.command = function(cmd) {
   this.rs.writeSync(0);
-  this.write8Bits(cmd);
+  this.write(cmd);
 };
 
 // private
-Lcd.prototype.write = function(data) {
-  this.write8Bits(data);
-};
-
-// private
-Lcd.prototype.write8Bits = function(val) {
+Lcd.prototype.write = function(val) {
   this.write4Bits(val >> 4);
   this.write4Bits(val & 0xf);
 };
