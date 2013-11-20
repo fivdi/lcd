@@ -172,7 +172,7 @@ Lcd.prototype.command = function(cmd) {
 // private
 Lcd.prototype.write = function(val) {
   this.write4Bits(val >> 4);
-  this.write4Bits(val & 0xf);
+  this.write4Bits(val);
 };
 
 // private
