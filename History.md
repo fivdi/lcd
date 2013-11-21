@@ -1,5 +1,6 @@
 ===================
 
+  * Print optimization [#1](https://github.com/fivdi/lcd/issues/1)
   * Removed write8Bits method
 
 0.1.0 - Nov 18 2013

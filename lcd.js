@@ -64,13 +64,21 @@ Lcd.prototype.init = function init() {
 };
 
 Lcd.prototype.print = function(val) {
-  var str = val.toString(),
-    i;
+  var pos,
+    displayFills;
+
+  val += '';
 
   this.rs.writeSync(1);
 
-  for (i = 0; i != str.length; ++i) {
-    this.write(str.charCodeAt(i));
+  // If n*80+m characters should be printed, where n>1, m<80, don't display the
+  // first (n-1)*80 characters as they will be overwritten. For example, if
+  // asked to print 802 characters, don't display the first 740.
+  displayFills = Math.floor(val.length / 80);
+  pos = displayFills > 1 ? (displayFills - 1) * 80 : 0;
+
+  for (; pos != val.length; pos += 1) {
+    this.write(val.charCodeAt(pos));
   }
 };
 
