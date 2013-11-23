@@ -98,9 +98,9 @@ The config object has these possibilities:
  * **e** Enable GPIO number.
  * **data** Array of four GPIO numbers for data bus bits D4 through D7.
 
-**print(val)** Converts val to string and write it to display asynchronously.
-A 'printed' event is emitted after the operation has completed. val is
-passed to the event handler as the first argument.
+**print(val)** Converts val to string and write it to the display
+asynchronously. A 'printed' event is emitted after the operation has completed.
+val is passed to the event handler as the first argument.
 
 **clear()** Clears display and returns cursor to the home position. A 'clear'
 event is emitted after the operation has completed.
