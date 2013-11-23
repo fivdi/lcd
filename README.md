@@ -44,14 +44,14 @@ six GPIOs on the BeagleBone Black. GPIOs on Linux are identified by unsigned
 integers. The relevant information for all six GPIOs used here is shown in the
 following table:
 
-BBB Expansion Header | GPIO No. | Function | LCD Pin No.
+BBB Expansion Header | GPIO No. | LCD Function | LCD Pin No.
 :---: | :---: | :---: | ---:
-P8_13 | 23 | D4 | 11
-P8_14 | 26 | D5 | 12
-P8_15 | 47 | D7 | 14
-P8_16 | 46 | D6 | 13
-P8_17 | 27 | RS |  4
-P8_18 | 65 | E  |  6
+P8_13 | 23 | Data Bus Bit 4 | 11
+P8_14 | 26 | Data Bus Bit 5 | 12
+P8_15 | 47 | Data Bus Bit 7 | 14
+P8_16 | 46 | Data Bus Bit 6 | 13
+P8_17 | 27 | Register Select |  4
+P8_18 | 65 | Enable  |  6
 
 The constructor function is also told how many columns and rows the display
 has, eight and one respectively in this case.
