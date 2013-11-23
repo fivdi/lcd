@@ -45,7 +45,7 @@ integers. The relevant information for all six GPIOs used here is shown in the
 following table:
 
 BBB Expansion Header | GPIO No. | LCD Function | LCD Pin No.
-:---: | :---: | :---: | ---:
+:---: | :---: | :---: | :---:
 P8_13 | 23 | Data Bus Bit 4 | 11
 P8_14 | 26 | Data Bus Bit 5 | 12
 P8_15 | 47 | Data Bus Bit 7 | 14
