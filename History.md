@@ -1,5 +1,7 @@
+0.2.0 - Nov 23 2013
 ===================
 
+  * Asynchronous print [#2](https://github.com/fivdi/lcd/issues/2)
   * Print optimization [#1](https://github.com/fivdi/lcd/issues/1)
   * Removed write8Bits method
 

@@ -69,17 +69,32 @@ Lcd.prototype.print = function(val) {
 
   val += '';
 
-  this.rs.writeSync(1);
-
   // If n*80+m characters should be printed, where n>1, m<80, don't display the
   // first (n-1)*80 characters as they will be overwritten. For example, if
   // asked to print 802 characters, don't display the first 740.
   displayFills = Math.floor(val.length / 80);
   pos = displayFills > 1 ? (displayFills - 1) * 80 : 0;
 
-  for (; pos != val.length; pos += 1) {
+  this.printNextBatch(val, pos);
+};
+
+// private
+Lcd.prototype.printNextBatch = function(val, pos) {
+  var endPos = Math.min(pos + 5, val.length);
+
+  this.rs.writeSync(1);
+
+  for (; pos != endPos; pos += 1) {
     this.write(val.charCodeAt(pos));
   }
+
+  process.nextTick(function () {
+    if (pos != val.length) {
+      this.printNextBatch(val, pos);
+    } else {
+      this.emit('printed', val);
+    }
+  }.bind(this));
 };
 
 Lcd.prototype.clear = function() {

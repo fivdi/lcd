@@ -75,6 +75,13 @@ process.on('SIGINT', function () {
 });
 ```
 
+## News & Updates
+
+### lcd v0.2.0 breaking asynchronous print change
+
+As of lcd v0.2.0 the print method is asynchronous. In previous versions it was
+synchronous.
+
 ## API
 
 **Lcd(config)**
@@ -91,14 +98,16 @@ The config object has these possibilities:
  * **e** Enable GPIO number.
  * **data** Array of four GPIO numbers for data bus bits D4 through D7.
 
-**print(val)** Converts val to string and write it to display.
+**print(val)** Converts val to string and write it to display asynchronously.
+A 'printed' event is emitted after the operation has completed. val is
+passed to the event handler as the first argument.
 
 **clear()** Clears display and returns cursor to the home position. A 'clear'
-event will be emitted after the operation has completed.
+event is emitted after the operation has completed.
 
 **home()** Returns cursor to home position. Also returns display being shifted
-to the original position. A 'home' event will be emitted after the operation
-has completed.
+to the original position. A 'home' event is emitted after the operation has
+completed.
 
 **setCursor(col, row)** Moves the cursor to the specified col and row.
 Numbering for col and row starts at zero.
