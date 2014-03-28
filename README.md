@@ -86,8 +86,8 @@ synchronous.
 
 **Lcd(config)**
 
-Returns a new Lcd object. A 'ready' event will be emitted when the display is
-ready for usage.
+Returns a new Lcd object which inherits from EventEmitter. A 'ready' event will
+be emitted when the display is ready for usage.
 
 The config object has these possibilities:
 
@@ -100,7 +100,8 @@ The config object has these possibilities:
 
 **print(val)** Converts val to string and write it to the display
 asynchronously. A 'printed' event is emitted after the operation has completed.
-val is passed to the event handler as the first argument.
+val is passed to the event handler as the first argument. The example
+print-twice-20x4.js demonstrates how to print two strings in succession.
 
 **clear()** Clears display and returns cursor to the home position. A 'clear'
 event is emitted after the operation has completed.
