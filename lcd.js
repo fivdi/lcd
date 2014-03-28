@@ -37,8 +37,6 @@ module.exports = Lcd;
 
 // private
 Lcd.prototype.init = function init() {
-  // TODO - This method doesn't look the best, improve it.
-  // TODO - Findout out how precise delay/setTimeout are.
   Q.delay(15)                                            // wait > 15ms
   .then(function () {this.write4Bits(0x03);}.bind(this)) // 1st wake up
   .delay(5)                                              // wait > 4.1ms
@@ -80,15 +78,15 @@ Lcd.prototype.print = function(val) {
 
 // private
 Lcd.prototype.printNextBatch = function(val, pos) {
-  var endPos = Math.min(pos + 5, val.length);
+  setImmediate(function () {
+    var endPos = Math.min(pos + 5, val.length);
 
-  this.rs.writeSync(1);
+    this.rs.writeSync(1);
 
-  for (; pos != endPos; pos += 1) {
-    this.write(val.charCodeAt(pos));
-  }
+    for (; pos != endPos; pos += 1) {
+      this.write(val.charCodeAt(pos));
+    }
 
-  process.nextTick(function () {
     if (pos != val.length) {
       this.printNextBatch(val, pos);
     } else {

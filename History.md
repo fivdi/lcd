@@ -1,3 +1,10 @@
+0.2.1 - Mar 28 2014
+===================
+
+  * v0.11.x process.nextTick compatibility [#5](https://github.com/fivdi/lcd/issues/5)
+  * Updated dependency: onoff 0.3.0 -> 0.3.1
+  * Updated dependency: q 0.9.7 -> 1.0.1
+
 0.2.0 - Nov 23 2013
 ===================
 
