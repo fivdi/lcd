@@ -134,6 +134,8 @@ shift.
 
 **noAutoscroll()** Turn automatic shifting off.
 
+**close()** Frees (unexports) all GPIOs used by the Lcd.
+
 ## Example "Hello, World!" on an 8x1 display
 
 "Hello, World!" is five characters too long for an 8x1 display, but by moving
