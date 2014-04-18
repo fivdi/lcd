@@ -1,7 +1,8 @@
 0.2.2 - Apr 18 2014
 ===================
 
-  * Documented BeagleBone Ångström prerequisites
+  * Fallback to setTimeout if setImmediate not available [#7](https://github.com/fivdi/lcd/issues/7)
+  * Documented BeagleBone Ångström prerequisites [#8](https://github.com/fivdi/lcd/issues/8)
   * Updated dependency: onoff 0.3.1 -> 0.3.2
 
 0.2.1 - Mar 28 2014

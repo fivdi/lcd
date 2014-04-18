@@ -3,6 +3,8 @@ var EventEmitter = require('events').EventEmitter,
   Q = require('q'),
   util = require('util');
 
+var ROW_OFFSETS = [0x00, 0x40, 0x14, 0x54];
+
 // TODO - Don't use magic numbers, define constants instead.
 
 function Lcd(config) {
@@ -78,7 +80,7 @@ Lcd.prototype.print = function(val) {
 
 // private
 Lcd.prototype.printNextBatch = function(val, pos) {
-  setImmediate(function () {
+  var printBatch = function () {
     var endPos = Math.min(pos + 5, val.length);
 
     this.rs.writeSync(1);
@@ -92,7 +94,14 @@ Lcd.prototype.printNextBatch = function(val, pos) {
     } else {
       this.emit('printed', val);
     }
-  }.bind(this));
+  }.bind(this);
+
+  // Fallback to setTimeout if setImmediate doesn't exist (Node.js < v0.10)
+  if (typeof setImmediate === 'function') {
+    setImmediate(printBatch);
+  } else {
+    setTimeout(printBatch, 0);
+  }
 };
 
 Lcd.prototype.clear = function() {
@@ -109,10 +118,9 @@ Lcd.prototype.home = function() {
   }.bind(this), 3); // Wait > 1.52ms. There were issues waiting for 2ms so wait 3ms.
 };
 
-Lcd.prototype.rowOffsets = [0x00, 0x40, 0x14, 0x54];
 Lcd.prototype.setCursor = function(col, row) {
   var r = row > this.rows ? this.rows - 1 : row;
-  this.command(0x80 | (col + this.rowOffsets[r]));
+  this.command(0x80 | (col + ROW_OFFSETS[r]));
 };
 
 Lcd.prototype.display = function() {
