@@ -1,3 +1,9 @@
+0.2.2 - Apr 18 2014
+===================
+
+  * Documented BeagleBone Ångström prerequisites
+  * Updated dependency: onoff 0.3.1 -> 0.3.2
+
 0.2.1 - Mar 28 2014
 ===================
 

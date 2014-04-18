@@ -16,9 +16,29 @@ mode.
 
 lcd requires Node.js v0.8.0 or higher.
 
+**BeagleBone Prerequisites**
+
+Before installing epoll on stock Ångström on the BeagleBone three Python
+modules need to be installed; python-compiler, python-misc, and
+python-multiprocessing. They can be installed with the following commands:
+
+```bash
+$ opkg update
+$ opkg install python-compiler
+$ opkg install python-misc
+$ opkg install python-multiprocessing
+```
+
+## News & Updates
+
+### lcd v0.2.0 breaking asynchronous print change
+
+As of lcd v0.2.0 the print method is asynchronous. In previous versions it was
+synchronous.
+
 ## Usage
 
-The following nine line program can be used to make a digital clock.
+The following nine line program can be used to make a UTC digital clock.
 
 ```js
 var Lcd = require('lcd'),
@@ -74,13 +94,6 @@ process.on('SIGINT', function () {
   process.exit();
 });
 ```
-
-## News & Updates
-
-### lcd v0.2.0 breaking asynchronous print change
-
-As of lcd v0.2.0 the print method is asynchronous. In previous versions it was
-synchronous.
 
 ## API
 
