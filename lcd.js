@@ -1,7 +1,8 @@
 var EventEmitter = require('events').EventEmitter,
   Gpio = require('onoff').Gpio,
   Q = require('q'),
-  util = require('util');
+  util = require('util'),
+  tick = global.setImmediate || process.nextTick;
 
 var ROW_OFFSETS = [0x00, 0x40, 0x14, 0x54];
 
@@ -46,9 +47,11 @@ Lcd.prototype.init = function init() {
   .delay(1)                                              // wait > 160us
   .then(function () {this.write4Bits(0x03);}.bind(this)) // 3rd wake up
   .delay(1)                                              // wait > 160us
-  .then(function () {this.write4Bits(0x02);}.bind(this)) // 4 bit interface
   .then(function () {
     var displayFunction = 0x20;
+
+    this.write4Bits(0x02); // 4 bit interface
+
     if (this.rows > 1) displayFunction |= 0x08;
     if (this.rows == 1 && this.largeFont) displayFunction |= 0x04;
     this.command(displayFunction);
@@ -71,37 +74,25 @@ Lcd.prototype.print = function(val) {
 
   // If n*80+m characters should be printed, where n>1, m<80, don't display the
   // first (n-1)*80 characters as they will be overwritten. For example, if
-  // asked to print 802 characters, don't display the first 740.
+  // asked to print 802 characters, don't display the first 720.
   displayFills = Math.floor(val.length / 80);
   pos = displayFills > 1 ? (displayFills - 1) * 80 : 0;
 
-  this.printNextBatch(val, pos);
+  this.printAsync(val, pos);
 };
 
 // private
-Lcd.prototype.printNextBatch = function(val, pos) {
-  var printBatch = function () {
-    var endPos = Math.min(pos + 5, val.length);
-
-    this.rs.writeSync(1);
-
-    for (; pos != endPos; pos += 1) {
+Lcd.prototype.printAsync = function(val, pos) {
+  var printOneChar = function () {
+    if (pos < val.length) {
       this.write(val.charCodeAt(pos));
-    }
-
-    if (pos != val.length) {
-      this.printNextBatch(val, pos);
+      this.printAsync(val, pos + 1);
     } else {
       this.emit('printed', val);
     }
   }.bind(this);
 
-  // Fallback to setTimeout if setImmediate doesn't exist (Node.js < v0.10)
-  if (typeof setImmediate === 'function') {
-    setImmediate(printBatch);
-  } else {
-    setTimeout(printBatch, 0);
-  }
+  tick(printOneChar);
 };
 
 Lcd.prototype.clear = function() {
@@ -194,12 +185,17 @@ Lcd.prototype.close = function() {
 
 // private
 Lcd.prototype.command = function(cmd) {
-  this.rs.writeSync(0);
-  this.write(cmd);
+  this.send(cmd, 0);
 };
 
 // private
 Lcd.prototype.write = function(val) {
+  this.send(val, 1);
+};
+
+// private
+Lcd.prototype.send = function(val, mode) {
+  this.rs.writeSync(mode);
   this.write4Bits(val >> 4);
   this.write4Bits(val);
 };

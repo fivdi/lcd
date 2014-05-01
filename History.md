@@ -1,3 +1,8 @@
+0.2.3 - May 01 2014
+===================
+
+  * Fallback to nextTick if setImmediate not available [#7](https://github.com/fivdi/lcd/issues/7)
+
 0.2.2 - Apr 18 2014
 ===================
 
