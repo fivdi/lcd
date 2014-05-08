@@ -40,13 +40,13 @@ module.exports = Lcd;
 
 // private
 Lcd.prototype.init = function init() {
-  Q.delay(15)                                            // wait > 15ms
+  Q.delay(16)                                            // wait > 15ms
   .then(function () {this.write4Bits(0x03);}.bind(this)) // 1st wake up
-  .delay(5)                                              // wait > 4.1ms
+  .delay(6)                                              // wait > 4.1ms
   .then(function () {this.write4Bits(0x03);}.bind(this)) // 2nd wake up
-  .delay(1)                                              // wait > 160us
+  .delay(2)                                              // wait > 160us
   .then(function () {this.write4Bits(0x03);}.bind(this)) // 3rd wake up
-  .delay(1)                                              // wait > 160us
+  .delay(2)                                              // wait > 160us
   .then(function () {
     var displayFunction = 0x20;
 
@@ -62,7 +62,7 @@ Lcd.prototype.init = function init() {
 
     this.command(0x01); // clear display (don't call clear to avoid event)
   }.bind(this))
-  .delay(3)             // wait 3ms for display to clear
+  .delay(3)             // wait > 1.52ms for display to clear
   .then(function () {this.emit('ready')}.bind(this));
 };
 

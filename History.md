@@ -1,3 +1,8 @@
+0.2.4 - May 08 2014
+===================
+
+  * Delay 1ms more than required [#8](https://github.com/fivdi/lcd/issues/8)
+
 0.2.3 - May 01 2014
 ===================
 
