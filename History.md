@@ -1,5 +1,5 @@
-Unpublished
-===========
+1.1.0 - Jan 10 2015
+===================
 
   * Async methods now support callbacks
 
