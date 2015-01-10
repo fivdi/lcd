@@ -1,11 +1,13 @@
+'use strict';
+
 var async = require('async'),
   Lcd = require('../lcd'),
-  lcd = new Lcd({rs:23, e:24, data:[17, 18, 22, 27], cols:20, rows:4});// Pi
+  lcd = new Lcd({rs: 23, e: 24, data: [17, 18, 22, 27], cols: 20, rows: 4});// Pi
 
 lcd.on('ready', function () {
   async.series([
     function (cb) {
-      lcd.print(Array(81).join(String.fromCharCode(255)), cb);
+      lcd.print(new Array(81).join(String.fromCharCode(255)), cb);
     },
     function (cb) {
       setTimeout(function () {
@@ -25,7 +27,7 @@ lcd.on('ready', function () {
       lcd.setCursor(6, 0);
       lcd.print('cd', cb);
     }
-  ], function (err, results) {
+  ], function (err) {
     if (err) {
       throw err;
     }

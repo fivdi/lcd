@@ -1,3 +1,5 @@
+'use strict';
+
 var EventEmitter = require('events').EventEmitter,
   Gpio = require('onoff').Gpio,
   Q = require('q'),
@@ -25,7 +27,7 @@ function Lcd(config) {
   this.e = new Gpio(config.e, 'low'); // enable, output, initially low
 
   this.data = []; // data bus, db4 thru db7, outputs, initially low
-  for (i = 0; i < config.data.length; ++i) {
+  for (i = 0; i < config.data.length; i += 1) {
     this.data.push(new Gpio(config.data[i], 'low'));
   }
 
@@ -39,21 +41,25 @@ util.inherits(Lcd, EventEmitter);
 module.exports = Lcd;
 
 // private
-Lcd.prototype.init = function init() {
-  Q.delay(16)                                            // wait > 15ms
-  .then(function () {this.write4Bits(0x03);}.bind(this)) // 1st wake up
-  .delay(6)                                              // wait > 4.1ms
-  .then(function () {this.write4Bits(0x03);}.bind(this)) // 2nd wake up
-  .delay(2)                                              // wait > 160us
-  .then(function () {this.write4Bits(0x03);}.bind(this)) // 3rd wake up
-  .delay(2)                                              // wait > 160us
+Lcd.prototype.init = function () {
+  Q.delay(16)                                              // wait > 15ms
+  .then(function () { this.write4Bits(0x03); }.bind(this)) // 1st wake up
+  .delay(6)                                                // wait > 4.1ms
+  .then(function () { this.write4Bits(0x03); }.bind(this)) // 2nd wake up
+  .delay(2)                                                // wait > 160us
+  .then(function () { this.write4Bits(0x03); }.bind(this)) // 3rd wake up
+  .delay(2)                                                // wait > 160us
   .then(function () {
     var displayFunction = 0x20;
 
     this.write4Bits(0x02); // 4 bit interface
 
-    if (this.rows > 1) displayFunction |= 0x08;
-    if (this.rows == 1 && this.largeFont) displayFunction |= 0x04;
+    if (this.rows > 1) {
+      displayFunction |= 0x08;
+    }
+    if (this.rows === 1 && this.largeFont) {
+      displayFunction |= 0x04;
+    }
     this.command(displayFunction);
 
     this.command(0x10);
@@ -63,10 +69,10 @@ Lcd.prototype.init = function init() {
     this.command(0x01); // clear display (don't call clear to avoid event)
   }.bind(this))
   .delay(3)             // wait > 1.52ms for display to clear
-  .then(function () {this.emit('ready')}.bind(this));
+  .then(function () { this.emit('ready'); }.bind(this));
 };
 
-Lcd.prototype.print = function(val, cb) {
+Lcd.prototype.print = function (val, cb) {
   var pos,
     displayFills;
 
@@ -82,14 +88,14 @@ Lcd.prototype.print = function(val, cb) {
 };
 
 // private
-Lcd.prototype._printAsync = function(val, pos, cb) {
+Lcd.prototype._printAsync = function (val, pos, cb) {
   tick(function () {
     if (pos >= val.length) {
       if (cb) {
         return cb(null);
-      } else {
-        return this.emit('printed', val);
       }
+
+      return this.emit('printed', val);
     }
 
     try {
@@ -105,86 +111,86 @@ Lcd.prototype._printAsync = function(val, pos, cb) {
   }.bind(this));
 };
 
-Lcd.prototype.clear = function(cb) {
+Lcd.prototype.clear = function (cb) {
   // Wait > 1.52ms. There were issues waiting for 2ms so wait 3ms.
   this._commandAndDelay(0x01, 3, 'clear', cb);
 };
 
-Lcd.prototype.home = function(cb) {
+Lcd.prototype.home = function (cb) {
   // Wait > 1.52ms. There were issues waiting for 2ms so wait 3ms.
   this._commandAndDelay(0x02, 3, 'home', cb);
 };
 
-Lcd.prototype.setCursor = function(col, row) {
+Lcd.prototype.setCursor = function (col, row) {
   var r = row > this.rows ? this.rows - 1 : row;
   this.command(0x80 | (col + ROW_OFFSETS[r]));
 };
 
-Lcd.prototype.display = function() {
+Lcd.prototype.display = function () {
   this.displayControl |= 0x04;
   this.command(this.displayControl);
 };
 
-Lcd.prototype.noDisplay = function() {
+Lcd.prototype.noDisplay = function () {
   this.displayControl &= ~0x04;
   this.command(this.displayControl);
 };
 
-Lcd.prototype.cursor = function() {
+Lcd.prototype.cursor = function () {
   this.displayControl |= 0x02;
   this.command(this.displayControl);
 };
 
-Lcd.prototype.noCursor = function() {
+Lcd.prototype.noCursor = function () {
   this.displayControl &= ~0x02;
   this.command(this.displayControl);
 };
 
-Lcd.prototype.blink = function() {
+Lcd.prototype.blink = function () {
   this.displayControl |= 0x01;
   this.command(this.displayControl);
 };
 
-Lcd.prototype.noBlink = function() {
+Lcd.prototype.noBlink = function () {
   this.displayControl &= ~0x01;
   this.command(this.displayControl);
 };
 
-Lcd.prototype.scrollDisplayLeft = function() {
+Lcd.prototype.scrollDisplayLeft = function () {
   this.command(0x18);
 };
 
-Lcd.prototype.scrollDisplayRight = function() {
+Lcd.prototype.scrollDisplayRight = function () {
   this.command(0x1c);
 };
 
-Lcd.prototype.leftToRight = function() {
+Lcd.prototype.leftToRight = function () {
   this.displayMode |= 0x02;
   this.command(this.displayMode);
 };
 
-Lcd.prototype.rightToLeft = function() {
+Lcd.prototype.rightToLeft = function () {
   this.displayMode &= ~0x02;
   this.command(this.displayMode);
 };
 
-Lcd.prototype.autoscroll = function() {
+Lcd.prototype.autoscroll = function () {
   this.displayMode |= 0x01;
   this.command(this.displayMode);
 };
 
-Lcd.prototype.noAutoscroll = function() {
+Lcd.prototype.noAutoscroll = function () {
   this.displayMode &= ~0x01;
   this.command(this.displayMode);
 };
 
-Lcd.prototype.close = function() {
+Lcd.prototype.close = function () {
   var i;
 
   this.rs.unexport();
   this.e.unexport();
 
-  for (i = 0; i < this.data.length; ++i) {
+  for (i = 0; i < this.data.length; i += 1) {
     this.data[i].unexport();
   }
 };
@@ -213,27 +219,27 @@ Lcd.prototype._commandAndDelay = function (command, timeout, event, cb) {
 };
 
 // private
-Lcd.prototype.command = function(cmd) {
+Lcd.prototype.command = function (cmd) {
   this.send(cmd, 0);
 };
 
 // private
-Lcd.prototype.write = function(val) {
+Lcd.prototype.write = function (val) {
   this.send(val, 1);
 };
 
 // private
-Lcd.prototype.send = function(val, mode) {
+Lcd.prototype.send = function (val, mode) {
   this.rs.writeSync(mode);
   this.write4Bits(val >> 4);
   this.write4Bits(val);
 };
 
 // private
-Lcd.prototype.write4Bits = function(val) {
+Lcd.prototype.write4Bits = function (val) {
   var i;
 
-  for (i = 0; i < this.data.length; ++i, val = val >> 1) {
+  for (i = 0; i < this.data.length; i += 1, val = val >> 1) {
     this.data[i].writeSync(val & 1);
   }
 

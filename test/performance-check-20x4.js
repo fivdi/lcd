@@ -1,37 +1,21 @@
+'use strict';
+
 /*
  * Fill the display with each character and determine how often the display
  * can be filled per second. At the same time, determine how often
  * setInterval(..., 1) times out per second.
  */
 var Lcd = require('../lcd'),
-  //lcd = new Lcd({rs:45, e:44, data:[66, 67, 68, 69], cols:20, rows:4}),// BBB
-  //lcd = new Lcd({rs:27, e:65, data:[23, 26, 46, 47], cols:8, rows:1}),// BBB
-  lcd = new Lcd({rs:23, e:24, data:[17, 18, 22, 27], cols:20, rows:4}),// Pi
+  //lcd = new Lcd({rs: 45, e: 44, data: [66, 67, 68, 69], cols: 20, rows: 4}),// BBB
+  //lcd = new Lcd({rs: 27, e: 65, data: [23, 26, 46, 47], cols: 8, rows: 1}),// BBB
+  lcd = new Lcd({rs: 23, e: 24, data: [17, 18, 22, 27], cols: 20, rows: 4}),// Pi
   charCode = 0,
   timeouts = 0,
   time,
   iv;
 
-lcd.on('ready', function () {
-  time = process.hrtime();
-  iv = setInterval(function () {
-    timeouts += 1;
-  }, 1);
-  fillDisplay();
-});
-
-lcd.on('printed', function (val) {
-  if (charCode < 256) {
-    fillDisplay();
-  } else {
-    printResults();
-    clearInterval(iv);
-    lcd.close();
-  }
-});
-
 function fillDisplay() {
-  lcd.print(Array(20 * 4 + 1).join(String.fromCharCode(charCode)));
+  lcd.print(new Array(20 * 4 + 1).join(String.fromCharCode(charCode)));
   charCode += 1;
 }
 
@@ -49,4 +33,22 @@ function printResults() {
   timeoutsPerSec = Math.floor(timeouts / seconds);
   console.log(timeoutsPerSec + ' timeouts per second');
 }
+
+lcd.on('ready', function () {
+  time = process.hrtime();
+  iv = setInterval(function () {
+    timeouts += 1;
+  }, 1);
+  fillDisplay();
+});
+
+lcd.on('printed', function () {
+  if (charCode < 256) {
+    fillDisplay();
+  } else {
+    printResults();
+    clearInterval(iv);
+    lcd.close();
+  }
+});
 
