@@ -73,7 +73,7 @@ Lcd.prototype.init = function () {
 };
 
 Lcd.prototype.print = function (val, cb) {
-  var pos,
+  var index,
     displayFills;
 
   val += '';
@@ -82,31 +82,31 @@ Lcd.prototype.print = function (val, cb) {
   // first (n-1)*80 characters as they will be overwritten. For example, if
   // asked to print 802 characters, don't display the first 720.
   displayFills = Math.floor(val.length / 80);
-  pos = displayFills > 1 ? (displayFills - 1) * 80 : 0;
+  index = displayFills > 1 ? (displayFills - 1) * 80 : 0;
 
-  this._printAsync(val, pos, cb);
+  this._printChar(val, index, cb);
 };
 
 // private
-Lcd.prototype._printAsync = function (val, pos, cb) {
+Lcd.prototype._printChar = function (str, index, cb) {
   tick(function () {
-    if (pos >= val.length) {
+    if (index >= str.length) {
       if (cb) {
-        return cb(null);
+        return cb(null, str);
       }
 
-      return this.emit('printed', val);
+      return this.emit('printed', str);
     }
 
     try {
-      this._write(val.charCodeAt(pos));
-      this._printAsync(val, pos + 1, cb);
+      this._write(str.charCodeAt(index));
+      this._printChar(str, index + 1, cb);
     } catch (e) {
       if (cb) {
-        cb(e);
-      } else {
-        this.emit('error', e);
+        return cb(e);
       }
+
+      return this.emit('error', e);
     }
   }.bind(this));
 };
@@ -203,17 +203,17 @@ Lcd.prototype._commandAndDelay = function (command, timeout, event, cb) {
 
       setTimeout(function () {
         if (cb) {
-          cb(null);
-        } else {
-          this.emit(event);
+          return cb(null);
         }
+
+        return this.emit(event);
       }.bind(this), timeout);
     } catch (e) {
       if (cb) {
-        cb(e);
-      } else {
-        this.emit('error', e);
+        return cb(e);
       }
+
+      return this.emit('error', e);
     }
   }.bind(this));
 };
