@@ -107,24 +107,54 @@ be emitted when the display is ready for usage.
 
 The config object has these possibilities:
 
- * **cols** LCD column count. Defaults to sixteen.
- * **rows** LCD row count. Defaults to one.
+ * **cols** LCD column count. Defaults to 16.
+ * **rows** LCD row count. Defaults to 1.
  * **largeFont** Use 5x10 dot font. Defaults to false for 5x8 dot font.
  * **rs** Register select GPIO number.
  * **e** Enable GPIO number.
  * **data** Array of four GPIO numbers for data bus bits D4 through D7.
 
-**print(val)** Converts val to string and write it to the display
-asynchronously. A 'printed' event is emitted after the operation has completed.
-val is passed to the event handler as the first argument. The example
-print-twice-20x4.js demonstrates how to print two strings in succession.
+**print(val, [cb])**
 
-**clear()** Clears display and returns cursor to the home position. A 'clear'
-event is emitted after the operation has completed.
+Converts val to string and writes it to the display asynchronously.
 
-**home()** Returns cursor to home position. Also returns display being shifted
-to the original position. A 'home' event is emitted after the operation has
-completed.
+If the optional completion callback is omitted, a 'printed' event is emitted
+after the operation has completed. The string representation of val is passed
+to the 'printed' event handler as the first argument. If an error occurs, an
+'error' event will be emitted and an error object will be passed to the
+'error' event handler as the first argument.
+
+If the optional completion callback is specified, it gets two arguments
+(err, str), where err is reserved for an error object and str is the string
+representation of val.
+
+The example print-twice-20x4.js demonstrates how to print two strings in
+succession using events.
+
+**clear([cb])**
+
+Clears display and returns cursor to the home position asynchronously.
+
+If the optional completion callback is omitted, a 'clear' event is emitted
+after the operation has completed. If an error occurs, an 'error' event will
+be emitted and an error object will be passed to the 'error' event handler
+as the first argument.
+
+If the optional completion callback is specified, it gets one argument (err),
+where err is reserved for an error object.
+
+**home([cb])**
+
+Returns cursor to home position asynchronously. Also returns display being
+shifted to the original position.
+
+If the optional completion callback is omitted, a 'home' event is emitted
+after the operation has completed. If an error occurs, an 'error' event will
+be emitted and an error object will be passed to the 'error' event handler
+as the first argument.
+
+If the optional completion callback is specified, it gets one argument (err),
+where err is reserved for an error object.
 
 **setCursor(col, row)** Moves the cursor to the specified col and row.
 Numbering for col and row starts at zero.
