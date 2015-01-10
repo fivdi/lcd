@@ -18,9 +18,12 @@ lcd requires Node.js v0.8.0 or higher.
 
 **BeagleBone Prerequisites**
 
-Before installing epoll on stock Ångström on the BeagleBone three Python
-modules need to be installed; python-compiler, python-misc, and
-python-multiprocessing. They can be installed with the following commands:
+There are no prerequisites for using lcd on the BeagleBone or BeagleBone
+Black, when Debian is being used.
+
+Before installing onoff on stock Ångström on the BeagleBone or BeagleBone
+Black, three Python modules need to be installed; python-compiler, python-misc,
+and python-multiprocessing. They can be installed with the following commands:
 
 ```bash
 $ opkg update
