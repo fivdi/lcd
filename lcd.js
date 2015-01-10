@@ -66,7 +66,7 @@ Lcd.prototype.init = function init() {
   .then(function () {this.emit('ready')}.bind(this));
 };
 
-Lcd.prototype.print = function(val) {
+Lcd.prototype.print = function(val, cb) {
   var pos,
     displayFills;
 
@@ -78,35 +78,41 @@ Lcd.prototype.print = function(val) {
   displayFills = Math.floor(val.length / 80);
   pos = displayFills > 1 ? (displayFills - 1) * 80 : 0;
 
-  this.printAsync(val, pos);
+  this._printAsync(val, pos, cb);
 };
 
 // private
-Lcd.prototype.printAsync = function(val, pos) {
-  var printOneChar = function () {
-    if (pos < val.length) {
-      this.write(val.charCodeAt(pos));
-      this.printAsync(val, pos + 1);
-    } else {
-      this.emit('printed', val);
+Lcd.prototype._printAsync = function(val, pos, cb) {
+  tick(function () {
+    if (pos >= val.length) {
+      if (cb) {
+        return cb(null);
+      } else {
+        return this.emit('printed', val);
+      }
     }
-  }.bind(this);
 
-  tick(printOneChar);
+    try {
+      this.write(val.charCodeAt(pos));
+      this._printAsync(val, pos + 1, cb);
+    } catch (e) {
+      if (cb) {
+        cb(e);
+      } else {
+        this.emit('error', e);
+      }
+    }
+  }.bind(this));
 };
 
-Lcd.prototype.clear = function() {
-  this.command(0x01);
-  setTimeout(function () {
-    this.emit('clear');
-  }.bind(this), 3); // Wait > 1.52ms. There were issues waiting for 2ms so wait 3ms.
+Lcd.prototype.clear = function(cb) {
+  // Wait > 1.52ms. There were issues waiting for 2ms so wait 3ms.
+  this._commandAndDelay(0x01, 3, 'clear', cb);
 };
 
-Lcd.prototype.home = function() {
-  this.command(0x02);
-  setTimeout(function () {
-    this.emit('home');
-  }.bind(this), 3); // Wait > 1.52ms. There were issues waiting for 2ms so wait 3ms.
+Lcd.prototype.home = function(cb) {
+  // Wait > 1.52ms. There were issues waiting for 2ms so wait 3ms.
+  this._commandAndDelay(0x02, 3, 'home', cb);
 };
 
 Lcd.prototype.setCursor = function(col, row) {
@@ -184,6 +190,29 @@ Lcd.prototype.close = function() {
 };
 
 // private
+Lcd.prototype._commandAndDelay = function (command, timeout, event, cb) {
+  tick(function () {
+    try {
+      this.command(command);
+
+      setTimeout(function () {
+        if (cb) {
+          cb(null);
+        } else {
+          this.emit(event);
+        }
+      }.bind(this), timeout);
+    } catch (e) {
+      if (cb) {
+        cb(e);
+      } else {
+        this.emit('error', e);
+      }
+    }
+  }.bind(this));
+};
+
+// private
 Lcd.prototype.command = function(cmd) {
   this.send(cmd, 0);
 };
@@ -208,7 +237,10 @@ Lcd.prototype.write4Bits = function(val) {
     this.data[i].writeSync(val & 1);
   }
 
-  this.e.writeSync(1); // enable pulse >= 300ns
+  // enable pulse >= 300ns
+  // writeSync takes ~10 microseconds to execute on the BBB, so there's
+  // nothing special needed to wait 300 nanoseconds.
+  this.e.writeSync(1);
   this.e.writeSync(0);
 };
 

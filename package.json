@@ -21,6 +21,9 @@
     "onoff": "~1.0.0",
     "q": "~1.1.2"
   },
+  "devDependencies": {
+    "async": "~0.9.0"
+  },
   "keywords": [
     "lcd",
     "hd44780",
