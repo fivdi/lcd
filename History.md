@@ -1,5 +1,5 @@
-Unpublished
-===========
+1.0.0 - Jan 10 2015
+===================
 
   * Updated dependency: onoff 0.3.2 -> 1.0.0 (GPIO access without superuser privileges on Raspbian)
   * Updated dependency: q 1.0.1 -> 1.1.2
