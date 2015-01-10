@@ -44,8 +44,8 @@ synchronous.
 The following nine line program can be used to make a UTC digital clock.
 
 ```js
-var Lcd = require('lcd'),
-  lcd = new Lcd({rs:27, e:65, data:[23, 26, 46, 47], cols:8, rows:1});
+var Lcd = require('../lcd'),
+  lcd = new Lcd({rs: 27, e: 65, data: [23, 26, 46, 47], cols: 8, rows: 1});
 
 lcd.on('ready', function () {
   setInterval(function () {
@@ -163,13 +163,7 @@ but only eight of them are visible.
 
 ```js
 var Lcd = require('../lcd'),
-  lcd = new Lcd({rs:27, e:65, data:[23, 26, 46, 47], cols:8, rows:1});
-
-lcd.on('ready', function () {
-  lcd.setCursor(8, 0);
-  lcd.autoscroll();
-  print('Hello, World! ** ');
-});
+  lcd = new Lcd({rs: 27, e: 65, data: [23, 26, 46, 47], cols: 8, rows: 1});
 
 function print(str, pos) {
   pos = pos || 0;
@@ -184,6 +178,12 @@ function print(str, pos) {
     print(str, pos + 1);
   }, 300);
 }
+
+lcd.on('ready', function () {
+  lcd.setCursor(8, 0);
+  lcd.autoscroll();
+  print('Hello, World! ** ');
+});
 ```
 
 ## Tested with the following displays
