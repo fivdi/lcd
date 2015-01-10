@@ -126,7 +126,8 @@ to the 'printed' event handler as the first argument. If an error occurs, an
 
 If the optional completion callback is specified, it gets two arguments
 (err, str), where err is reserved for an error object and str is the string
-representation of val.
+representation of val. If the optional completion callback is specified, no
+'printed' or 'error' event will be emitted.
 
 The example print-twice-20x4.js demonstrates how to print two strings in
 succession using events.
@@ -141,7 +142,8 @@ be emitted and an error object will be passed to the 'error' event handler
 as the first argument.
 
 If the optional completion callback is specified, it gets one argument (err),
-where err is reserved for an error object.
+where err is reserved for an error object. If the optional completion callback
+is specified, no 'clear' or 'error' event will be emitted.
 
 **home([cb])**
 
@@ -154,7 +156,8 @@ be emitted and an error object will be passed to the 'error' event handler
 as the first argument.
 
 If the optional completion callback is specified, it gets one argument (err),
-where err is reserved for an error object.
+where err is reserved for an error object. If the optional completion callback
+is specified, no 'home' or 'error' event will be emitted.
 
 **setCursor(col, row)** Moves the cursor to the specified col and row.
 Numbering for col and row starts at zero.
