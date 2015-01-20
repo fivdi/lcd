@@ -1,5 +1,7 @@
 ## lcd
 
+**lcd is io.js and Node.js compatable**
+
 A Node.js Hitachi HD44780 LCD driver for Linux boards such as the BeagleBone or
 Raspberry Pi. Heavily inspired by the Arduino
 [LiquidCrystal library](http://arduino.cc/en/Tutorial/LiquidCrystal).
