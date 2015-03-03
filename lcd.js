@@ -24,7 +24,7 @@ var __COMMANDS = {
   RIGHT_TO_LEFT: ~0x02,
   AUTOSCROLL_ON: 0x01,
   AUTOSCROLL_OFF: ~0x01
-}
+};
 
 function Lcd(config) {
   var i;
@@ -129,7 +129,7 @@ Lcd.prototype._printChar = function (str, index, cb) {
 
 Lcd.prototype.clear = function (cb) {
   // Wait > 1.52ms. There were issues waiting for 2ms so wait 3ms.
-  this._commandAndDelay(__COMMMANDS.CLEAR_DISPLAY, 3, 'clear', cb);
+  this._commandAndDelay(__COMMANDS.CLEAR_DISPLAY, 3, 'clear', cb);
 };
 
 Lcd.prototype.home = function (cb) {
