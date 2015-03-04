@@ -1,3 +1,9 @@
+1.1.1 - Mar 04 2015
+===================
+
+  * Got rid of the magic numbers and replaced them with a command map (by [nodebotanist](https://github.com/nodebotanist))
+  * Added test harness and tests (by [nodebotanist](https://github.com/nodebotanist))
+
 1.1.0 - Jan 10 2015
 ===================
 
