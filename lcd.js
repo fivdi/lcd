@@ -256,8 +256,6 @@ Lcd.prototype._send = function (val, mode) {
 Lcd.prototype._write4Bits = function (val) {
   if(!(typeof val === 'number')){
     throw new Error("Value passed to ._write4Bits must be a number");
-  } else if (val > 16){
-    throw new Error("Value passed to .write4Bits must be 16 or less")
   }
 
   var i;

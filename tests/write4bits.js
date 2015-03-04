@@ -24,11 +24,6 @@ describe('write4bits tests', function(){
 	it('Throw an error if a value that is not a Number is passed', function(){
 		assert.throws(function(){lcd._write4Bits('Hello');}, 'Value passed to ._write4Bits must be a number');
 	});
-
-	it('Throw an error if a Number greater than 16 is passed', function(){
-		assert.throws(function(){lcd._write4Bits(0x11);}, 'value passed to ._write4Bits must be 16 or less');
-	});
-
 	after(function(){
 		lcd.close();
 	});
