@@ -1,5 +1,5 @@
-Unpublished
-===========
+1.1.1 - Feb 07 2016
+===================
 
   * Improved documentation and examples
   * Updated dependencies
