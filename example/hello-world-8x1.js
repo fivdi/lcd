@@ -10,11 +10,15 @@ function print(str, pos) {
     pos = 0;
   }
 
-  lcd.print(str[pos]);
+  lcd.print(str[pos], function (err) {
+    if (err) {
+      throw err;
+    }
 
-  setTimeout(function () {
-    print(str, pos + 1);
-  }, 300);
+    setTimeout(function () {
+      print(str, pos + 1);
+    }, 300);
+  });
 }
 
 lcd.on('ready', function () {

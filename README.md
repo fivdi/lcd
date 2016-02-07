@@ -1,7 +1,5 @@
 ## lcd
 
-**lcd is io.js and Node.js compatable**
-
 A Node.js Hitachi HD44780 LCD driver for Linux boards such as the BeagleBone or
 Raspberry Pi. Heavily inspired by the Arduino
 [LiquidCrystal library](http://arduino.cc/en/Tutorial/LiquidCrystal).
@@ -14,7 +12,7 @@ mode.
 
 ## Installation
 
-    $ [sudo] npm install lcd
+    $ npm install lcd
 
 If you're using io.js v3 or Node.js v4 or higher and seeing lots of compile
 errors when installing lcd, it's very likely that gcc/g++ 4.8 or higher are not
@@ -30,42 +28,29 @@ If you're using Node.js v0.10.29 on the BeagleBone Black and seeing a compile
 error saying that `‘REPLACE_INVALID_UTF8’ is not a member of ‘v8::String’`
 see [Node.js v0.10.29 and native addons on the BeagleBone Black](https://github.com/fivdi/onoff/wiki/Node.js-v0.10.29-and-native-addons-on-the-BeagleBone-Black).
 
-**BeagleBone Prerequisites**
-
-There are no prerequisites for using lcd on the BeagleBone or BeagleBone
-Black, when Debian is being used.
-
-Before installing lcd on stock Ångström on the BeagleBone or BeagleBone
-Black, three Python modules need to be installed; python-compiler, python-misc,
-and python-multiprocessing. They can be installed with the following commands:
-
-```bash
-$ opkg update
-$ opkg install python-compiler
-$ opkg install python-misc
-$ opkg install python-multiprocessing
-```
-
-## News & Updates
-
-### lcd v0.2.0 breaking asynchronous print change
-
-As of lcd v0.2.0 the print method is asynchronous. In previous versions it was
-synchronous.
-
 ## Usage
 
-The following nine line program can be used to make a UTC digital clock.
+The following program can be used to make a UTC digital clock.
 
 ```js
-var Lcd = require('../lcd'),
+var Lcd = require('lcd'),
   lcd = new Lcd({rs: 27, e: 65, data: [23, 26, 46, 47], cols: 8, rows: 1});
 
 lcd.on('ready', function () {
   setInterval(function () {
     lcd.setCursor(0, 0);
-    lcd.print(new Date().toISOString().substring(11, 19));
+    lcd.print(new Date().toISOString().substring(11, 19), function (err) {
+      if (err) {
+        throw err;
+      }
+    });
   }, 1000);
+});
+
+// If ctrl+c is hit, free resources and exit.
+process.on('SIGINT', function () {
+  lcd.close();
+  process.exit();
 });
 ```
 
@@ -101,17 +86,6 @@ ready for usage.
 The 'ready' handler leverages setInterval to execute a function that updates
 the time displayed on the LCD once a second.
 
-Adding the following few lines will turn the digital clock into a good citizen
-that cleans up after itself.
-
-```js
-// If ctrl+c is hit, free resources and exit.
-process.on('SIGINT', function () {
-  lcd.close();
-  process.exit();
-});
-```
-
 ## API
 
 **Lcd(config)**
@@ -128,9 +102,9 @@ The config object has these possibilities:
  * **e** Enable GPIO number.
  * **data** Array of four GPIO numbers for data bus bits D4 through D7.
 
-**print(val, [cb])**
+**print(val, [callback])**
 
-Converts val to string and writes it to the display asynchronously.
+Converts val to string and writes it to the display **asynchronously**.
 
 If the optional completion callback is omitted, a 'printed' event is emitted
 after the operation has completed. The string representation of val is passed
@@ -144,11 +118,11 @@ representation of val. If the optional completion callback is specified, no
 'printed' or 'error' event will be emitted.
 
 The example print-twice-20x4.js demonstrates how to print two strings in
-succession using events.
+succession.
 
-**clear([cb])**
+**clear([callback])**
 
-Clears display and returns cursor to the home position asynchronously.
+Clears display and returns cursor to the home position **asynchronously**.
 
 If the optional completion callback is omitted, a 'clear' event is emitted
 after the operation has completed. If an error occurs, an 'error' event will
@@ -159,9 +133,9 @@ If the optional completion callback is specified, it gets one argument (err),
 where err is reserved for an error object. If the optional completion callback
 is specified, no 'clear' or 'error' event will be emitted.
 
-**home([cb])**
+**home([callback])**
 
-Returns cursor to home position asynchronously. Also returns display being
+Returns cursor to home position **asynchronously**. Also returns display being
 shifted to the original position.
 
 If the optional completion callback is omitted, a 'home' event is emitted
@@ -209,7 +183,7 @@ character by character. Note that an 8x1 display actually has eighty columns
 but only eight of them are visible.
 
 ```js
-var Lcd = require('../lcd'),
+var Lcd = require('lcd'),
   lcd = new Lcd({rs: 27, e: 65, data: [23, 26, 46, 47], cols: 8, rows: 1});
 
 function print(str, pos) {
@@ -219,17 +193,27 @@ function print(str, pos) {
     pos = 0;
   }
 
-  lcd.print(str[pos]);
+  lcd.print(str[pos], function (err) {
+    if (err) {
+      throw err;
+    }
 
-  setTimeout(function () {
-    print(str, pos + 1);
-  }, 300);
+    setTimeout(function () {
+      print(str, pos + 1);
+    }, 300);
+  });
 }
 
 lcd.on('ready', function () {
   lcd.setCursor(8, 0);
   lcd.autoscroll();
   print('Hello, World! ** ');
+});
+
+// If ctrl+c is hit, free resources and exit.
+process.on('SIGINT', function () {
+  lcd.close();
+  process.exit();
 });
 ```
 
