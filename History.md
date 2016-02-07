@@ -2,6 +2,7 @@ Unpublished
 ===========
 
   * Improved documentation and examples
+  * Updated dependencies
 
 1.1.1 - Mar 04 2015
 ===================

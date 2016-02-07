@@ -18,8 +18,8 @@
     "node": ">=0.8.0"
   },
   "dependencies": {
-    "onoff": "~1.0.2",
-    "q": "~1.2.0"
+    "onoff": "~1.0.4",
+    "q": "~1.4.1"
   },
   "devDependencies": {
     "async": "~0.9.0",
