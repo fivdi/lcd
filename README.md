@@ -1,7 +1,8 @@
 ## lcd
 
-A Node.js Hitachi HD44780 LCD driver for Linux boards such as the BeagleBone or
-Raspberry Pi. Heavily inspired by the Arduino
+A **Node.js** Hitachi HD44780 LCD driver for Linux boards like the Raspberry Pi
+Zero, 1, 2, or 3, BeagleBone, or BeagleBone Black. Heavily inspired by the
+Arduino
 [LiquidCrystal library](http://arduino.cc/en/Tutorial/LiquidCrystal).
 
 Most LCDs compatible with the HD44780 have a sixteen pin interface. This
@@ -14,9 +15,9 @@ mode.
 
     $ npm install lcd
 
-If you're using io.js v3 or Node.js v4 or higher and seeing lots of compile
-errors when installing lcd, it's very likely that gcc/g++ 4.8 or higher are not
-installed. See
+If you're using Node.js v4 or higher and seeing lots of compile errors when
+installing lcd, it's very likely that gcc/g++ 4.8 or higher are not installed.
+See
 [Node.js v4 and native addons](https://github.com/fivdi/onoff/wiki/Node.js-v4-and-native-addons)
 for details.
 
