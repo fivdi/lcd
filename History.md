@@ -1,9 +1,9 @@
-Unpublished
-===========
+1.1.3 - Mar 20 2016
+===================
 
   * queue async operations and execute them sequentially
 
-1.1.1 - Feb 07 2016
+1.1.2 - Feb 07 2016
 ===================
 
   * Improved documentation and examples
