@@ -2,8 +2,8 @@
 
 /**
  * Call asynchronous print twice in succession to print a total of 78
- * characters. The output from the two calls should be interlaced as print
- * is asynchronous.
+ * characters. The output from the two calls should not be interlaced as print
+ * calls are queued and executed sequentially.
  */
 var Lcd = require('../lcd'),
   //lcd = new Lcd({rs: 45, e: 44, data: [66, 67, 68, 69], cols: 20, rows: 4}),// BBB

@@ -50,6 +50,8 @@ function Lcd(config) {
   this.displayControl = 0x0c; // display on, cursor off, cursor blink off
   this.displayMode = 0x06; // left to right, no shift
 
+  this.asyncOps = [];
+
   this.init();
 }
 
@@ -89,52 +91,62 @@ Lcd.prototype.init = function () {
 };
 
 Lcd.prototype.print = function (val, cb) {
-  var index,
-    displayFills;
+  this._queueAsyncOperation(function (cb2) {
+    var index,
+      displayFills;
 
-  val += '';
+    val += '';
 
-  // If n*80+m characters should be printed, where n>1, m<80, don't display the
-  // first (n-1)*80 characters as they will be overwritten. For example, if
-  // asked to print 802 characters, don't display the first 720.
-  displayFills = Math.floor(val.length / 80);
-  index = displayFills > 1 ? (displayFills - 1) * 80 : 0;
+    // If n*80+m characters should be printed, where n>1, m<80, don't display the
+    // first (n-1)*80 characters as they will be overwritten. For example, if
+    // asked to print 802 characters, don't display the first 720.
+    displayFills = Math.floor(val.length / 80);
+    index = displayFills > 1 ? (displayFills - 1) * 80 : 0;
 
-  this._printChar(val, index, cb);
+    this._printChar(val, index, cb, cb2);
+  }.bind(this));
 };
 
 // private
-Lcd.prototype._printChar = function (str, index, cb) {
+Lcd.prototype._printChar = function (str, index, cb, cb2) {
   tick(function () {
     if (index >= str.length) {
       if (cb) {
-        return cb(null, str);
+        cb(null, str);
+      } else {
+        this.emit('printed', str);
       }
 
-      return this.emit('printed', str);
+      return cb2(null);
     }
 
     try {
       this._write(str.charCodeAt(index));
-      this._printChar(str, index + 1, cb);
+      this._printChar(str, index + 1, cb, cb2);
     } catch (e) {
       if (cb) {
-        return cb(e);
+        cb(e);
+      } else {
+        this.emit('error', e);
       }
 
-      return this.emit('error', e);
+      return cb2(e);
     }
   }.bind(this));
 };
 
 Lcd.prototype.clear = function (cb) {
-  // Wait > 1.52ms. There were issues waiting for 2ms so wait 3ms.
-  this._commandAndDelay(__COMMANDS.CLEAR_DISPLAY, 3, 'clear', cb);
+  this._queueAsyncOperation(function (cb2) {
+    // Wait > 1.52ms. There were issues waiting for 2ms so wait 3ms.
+    this._commandAndDelay(__COMMANDS.CLEAR_DISPLAY, 3, 'clear', cb, cb2);
+  }.bind(this));
 };
 
 Lcd.prototype.home = function (cb) {
-  // Wait > 1.52ms. There were issues waiting for 2ms so wait 3ms.
-  this._commandAndDelay(__COMMANDS.HOME, 3, 'home', cb);
+  this._queueAsyncOperation(function (cb2) {
+    // Wait > 1.52ms. There were issues waiting for 2ms so wait 3ms.
+    this._commandAndDelay(__COMMANDS.HOME, 3, 'home', cb, cb2);
+  }.bind(this));
 };
 
 Lcd.prototype.setCursor = function (col, row) {
@@ -213,25 +225,45 @@ Lcd.prototype.close = function () {
 };
 
 // private
-Lcd.prototype._commandAndDelay = function (command, timeout, event, cb) {
+Lcd.prototype._queueAsyncOperation = function (asyncOperation) {
+  this.asyncOps.push(asyncOperation);
+
+  if (this.asyncOps.length === 1) {
+    (function next() {
+      this.asyncOps[0](function () {
+        this.asyncOps.shift();
+        if (this.asyncOps.length !== 0) {
+          next.bind(this)();
+        }
+      }.bind(this));
+    }.bind(this)());
+  }
+}
+
+// private
+Lcd.prototype._commandAndDelay = function (command, timeout, event, cb, cb2) {
   tick(function () {
     try {
       this._command(command);
-
-      setTimeout(function () {
-        if (cb) {
-          return cb(null);
-        }
-
-        return this.emit(event);
-      }.bind(this), timeout);
     } catch (e) {
       if (cb) {
-        return cb(e);
+        cb(e);
+      } else {
+        this.emit('error', e);
       }
 
-      return this.emit('error', e);
+      return cb2(e);
     }
+
+    setTimeout(function () {
+      if (cb) {
+        cb(null);
+      } else {
+        this.emit(event);
+      }
+
+      return cb2(null);
+    }.bind(this), timeout);
   }.bind(this));
 };
 
