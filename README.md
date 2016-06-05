@@ -35,7 +35,7 @@ The following program can be used to make a UTC digital clock.
 
 ```js
 var Lcd = require('lcd'),
-  lcd = new Lcd({rs: 27, e: 65, data: [23, 26, 46, 47], cols: 8, rows: 1});
+  lcd = new Lcd({rs: 45, e: 44, data: [66, 67, 68, 69], cols: 8, rows: 1});
 
 lcd.on('ready', function () {
   setInterval(function () {
@@ -69,12 +69,12 @@ following table:
 
 BBB Expansion Header | GPIO No. | LCD Function | LCD Pin No.
 :---: | :---: | :---: | :---:
-P8_13 | 23 | Data Bus Bit 4 | 11
-P8_14 | 26 | Data Bus Bit 5 | 12
-P8_15 | 47 | Data Bus Bit 7 | 14
-P8_16 | 46 | Data Bus Bit 6 | 13
-P8_17 | 27 | Register Select |  4
-P8_18 | 65 | Enable  |  6
+P8_7 | 66 | Data Bus Bit 4 | 11
+P8_8 | 67 | Data Bus Bit 5 | 12
+P8_10 | 68 | Data Bus Bit 6 | 13
+P8_9 | 69 | Data Bus Bit 7 | 14
+P8_11 | 45 | Register Select |  4
+P8_12 | 44 | Enable  |  6
 
 The constructor function is also told how many columns and rows the display
 has, eight and one respectively in this case.
@@ -185,7 +185,7 @@ but only eight of them are visible.
 
 ```js
 var Lcd = require('lcd'),
-  lcd = new Lcd({rs: 27, e: 65, data: [23, 26, 46, 47], cols: 8, rows: 1});
+  lcd = new Lcd({rs: 45, e: 44, data: [66, 67, 68, 69], cols: 8, rows: 1});
 
 function print(str, pos) {
   pos = pos || 0;

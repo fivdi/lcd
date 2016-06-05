@@ -6,8 +6,6 @@
  * calls are queued and executed sequentially.
  */
 var Lcd = require('../lcd'),
-  //lcd = new Lcd({rs: 45, e: 44, data: [66, 67, 68, 69], cols: 20, rows: 4}),// BBB
-  //lcd = new Lcd({rs: 27, e: 65, data: [23, 26, 46, 47], cols: 8, rows: 1}),// BBB
   lcd = new Lcd({rs: 23, e: 24, data: [17, 18, 22, 27], cols: 20, rows: 4}),// Pi
   printed = 0;
 

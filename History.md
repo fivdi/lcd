@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * updated wiring for beaglebone examples
+
 1.1.3 - Mar 20 2016
 ===================
 
