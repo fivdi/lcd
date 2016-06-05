@@ -1,5 +1,5 @@
-Unpublished
-===========
+1.1.4 - Jun 05 2016
+===================
 
   * updated wiring for beaglebone examples
   * updated dependency: onoff 1.0.4 -> 1.1.1
