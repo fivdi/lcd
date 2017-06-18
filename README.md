@@ -11,6 +11,8 @@ Register select (RS), enable (E), and four data bus pins (D4-D7). The
 read/write (R/W) pin is assumed to be tied low to permanently select write
 mode.
 
+lcd supports Node.js versions 0.10, 0.12, 4, 5, 6, 7 and 8.
+
 ## Installation
 
     $ npm install lcd
