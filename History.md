@@ -1,6 +1,7 @@
 Unpublished
 ===========
 
+  * node v0.10 or higher required
   * update dependencies (onoff v1.1.8, q v1.5.0)
   * document supported node versions
 

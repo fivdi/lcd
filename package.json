@@ -15,7 +15,7 @@
     "url": "https://github.com/fivdi/lcd.git"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=0.10.0"
   },
   "dependencies": {
     "onoff": "~1.1.8",
