@@ -1,3 +1,9 @@
+Unpublished
+===========
+
+  * update dependencies (onoff v1.1.8, q v1.5.0)
+  * document supported node versions
+
 1.1.4 - Jun 05 2016
 ===================
 
