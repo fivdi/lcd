@@ -1,5 +1,5 @@
-Unpublished
-===========
+1.1.5 - Oct 15 2017
+===================
 
   * node v0.10 or higher required
   * update dependencies (onoff v1.1.8, q v1.5.0)
