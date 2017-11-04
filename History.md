@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * document node 9 support
+
 1.1.5 - Oct 15 2017
 ===================
 
