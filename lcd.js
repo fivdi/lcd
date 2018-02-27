@@ -3,8 +3,7 @@
 var EventEmitter = require('events').EventEmitter,
   Gpio = require('onoff').Gpio,
   Q = require('q'),
-  util = require('util'),
-  tick = global.setImmediate || process.nextTick;
+  util = require('util');
 
 var __ROW_OFFSETS = [0x00, 0x40, 0x14, 0x54];
 
@@ -109,7 +108,7 @@ Lcd.prototype.print = function (val, cb) {
 
 // private
 Lcd.prototype._printChar = function (str, index, cb, cb2) {
-  tick(function () {
+  setImmediate(function () {
     if (index >= str.length) {
       if (cb) {
         cb(null, str);
@@ -242,7 +241,7 @@ Lcd.prototype._queueAsyncOperation = function (asyncOperation) {
 
 // private
 Lcd.prototype._commandAndDelay = function (command, timeout, event, cb, cb2) {
-  tick(function () {
+  setImmediate(function () {
     try {
       this._command(command);
     } catch (e) {
