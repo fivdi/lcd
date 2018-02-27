@@ -18,11 +18,11 @@
     "node": ">=0.10.0"
   },
   "dependencies": {
-    "onoff": "~1.1.8",
-    "q": "~1.5.0"
+    "onoff": "^2.0.0",
+    "q": "^1.5.1"
   },
   "devDependencies": {
-    "async": "~0.9.0",
+    "async": "^2.6.0",
     "chai": "^2.1.0",
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.11.0",

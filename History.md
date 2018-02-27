@@ -2,6 +2,7 @@ Unpublished
 ===========
 
   * document node 9 support
+  * update dependencies (onoff v2.0.0, async v2.6.0)
 
 1.1.5 - Oct 15 2017
 ===================
