@@ -3,6 +3,7 @@ Unpublished
 
   * document node 9 support
   * update dependencies (onoff v2.0.0, async v2.6.0)
+  * drop support for node.js v0.10, v0.12, v5 and v7
 
 1.1.5 - Oct 15 2017
 ===================
