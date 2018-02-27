@@ -46,14 +46,13 @@ function Lcd(config) {
 
   this.lock = mutexify();
 
-  this.init();
+  this._init();
 }
 
 util.inherits(Lcd, EventEmitter);
 module.exports = Lcd;
 
-// private
-Lcd.prototype.init = function () {
+Lcd.prototype._init = function () {
   Q.delay(16)                                               // wait > 15ms
   .then(function () { this._write4Bits(0x03); }.bind(this)) // 1st wake up
   .delay(6)                                                 // wait > 4.1ms
@@ -98,7 +97,6 @@ Lcd.prototype.print = function (val, cb) {
   }.bind(this));
 };
 
-// private
 Lcd.prototype._printChar = function (str, index, release, cb) {
   setImmediate(function () {
     if (index >= str.length) {
@@ -206,7 +204,6 @@ Lcd.prototype.close = function () {
   this.data.forEach(gpio => gpio.unexport());
 };
 
-// private
 Lcd.prototype._commandAndDelay = function (command, timeout, event, cb) {
   this.lock(function (release) {
     try {
@@ -233,34 +230,26 @@ Lcd.prototype._commandAndDelay = function (command, timeout, event, cb) {
   }.bind(this));
 };
 
-// private
 Lcd.prototype._command = function (cmd) {
   this._send(cmd, 0);
 };
 
-// private
 Lcd.prototype._write = function (val) {
   this._send(val, 1);
 };
 
-// private
 Lcd.prototype._send = function (val, mode) {
   this.rs.writeSync(mode);
   this._write4Bits(val >> 4);
   this._write4Bits(val);
 };
 
-// private
 Lcd.prototype._write4Bits = function (val) {
   if(!(typeof val === 'number')){
     throw new Error("Value passed to ._write4Bits must be a number");
   }
 
-  var i;
-
-  for (i = 0; i < this.data.length; i += 1, val = val >> 1) {
-    this.data[i].writeSync(val & 1);
-  }
+  this.data.forEach((gpio, i) => gpio.writeSync((val >> i) & 1));
 
   // enable pulse >= 300ns
   this.e.writeSync(1);
