@@ -1,5 +1,5 @@
-Unpublished
-===========
+2.0.0 - Feb 27 2018
+===================
 
   * document node 9 support
   * update dependencies (onoff v2.0.0, async v2.6.0)
