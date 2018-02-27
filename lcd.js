@@ -6,9 +6,9 @@ const EventEmitter = require('events').EventEmitter,
   Q = require('q'),
   util = require('util');
 
-const __ROW_OFFSETS = [0x00, 0x40, 0x14, 0x54];
+const ROW_OFFSETS = [0x00, 0x40, 0x14, 0x54];
 
-const __COMMANDS = {
+const COMMANDS = {
   CLEAR_DISPLAY: 0x01,
   HOME: 0x02,
   SET_CURSOR: 0x80,
@@ -27,8 +27,6 @@ const __COMMANDS = {
 };
 
 function Lcd(config) {
-  var i;
-
   if (!(this instanceof Lcd)) {
     return new Lcd(config);
   }
@@ -41,11 +39,7 @@ function Lcd(config) {
 
   this.rs = new Gpio(config.rs, 'low'); // reg. select, output, initially low
   this.e = new Gpio(config.e, 'low'); // enable, output, initially low
-
-  this.data = []; // data bus, db4 thru db7, outputs, initially low
-  for (i = 0; i < config.data.length; i += 1) {
-    this.data.push(new Gpio(config.data[i], 'low'));
-  }
+  this.data = config.data.map(gpioNo => new Gpio(gpioNo, 'low'));
 
   this.displayControl = 0x0c; // display on, cursor off, cursor blink off
   this.displayMode = 0x06; // left to right, no shift
@@ -92,16 +86,13 @@ Lcd.prototype.init = function () {
 
 Lcd.prototype.print = function (val, cb) {
   this.lock(function (release) {
-    var index,
-      displayFills;
-
     val += '';
 
     // If n*80+m characters should be printed, where n>1, m<80, don't display the
     // first (n-1)*80 characters as they will be overwritten. For example, if
     // asked to print 802 characters, don't display the first 720.
-    displayFills = Math.floor(val.length / 80);
-    index = displayFills > 1 ? (displayFills - 1) * 80 : 0;
+    const displayFills = Math.floor(val.length / 80);
+    const index = displayFills > 1 ? (displayFills - 1) * 80 : 0;
 
     this._printChar(val, index, release, cb);
   }.bind(this));
@@ -137,87 +128,82 @@ Lcd.prototype._printChar = function (str, index, release, cb) {
 
 Lcd.prototype.clear = function (cb) {
   // Wait > 1.52ms. There were issues waiting for 2ms so wait 3ms.
-  this._commandAndDelay(__COMMANDS.CLEAR_DISPLAY, 3, 'clear', cb);
+  this._commandAndDelay(COMMANDS.CLEAR_DISPLAY, 3, 'clear', cb);
 };
 
 Lcd.prototype.home = function (cb) {
   // Wait > 1.52ms. There were issues waiting for 2ms so wait 3ms.
-  this._commandAndDelay(__COMMANDS.HOME, 3, 'home', cb);
+  this._commandAndDelay(COMMANDS.HOME, 3, 'home', cb);
 };
 
 Lcd.prototype.setCursor = function (col, row) {
-  var r = row > this.rows ? this.rows - 1 : row; //TODO: throw error instead? Seems like this could cause a silent bug.
+  const r = row > this.rows ? this.rows - 1 : row; //TODO: throw error instead? Seems like this could cause a silent bug.
   //we don't check for column because scrolling is a possibility. Should we check if it's in range if scrolling is off?
-  this._command(__COMMANDS.SET_CURSOR | (col + __ROW_OFFSETS[r]));
+  this._command(COMMANDS.SET_CURSOR | (col + ROW_OFFSETS[r]));
 };
 
 Lcd.prototype.display = function () {
-  this.displayControl |= __COMMANDS.DISPLAY_ON;
+  this.displayControl |= COMMANDS.DISPLAY_ON;
   this._command(this.displayControl);
 };
 
 Lcd.prototype.noDisplay = function () {
-  this.displayControl &= __COMMANDS.DISPLAY_OFF;
+  this.displayControl &= COMMANDS.DISPLAY_OFF;
   this._command(this.displayControl);
 };
 
 Lcd.prototype.cursor = function () {
-  this.displayControl |= __COMMANDS.CURSOR_ON;
+  this.displayControl |= COMMANDS.CURSOR_ON;
   this._command(this.displayControl);
 };
 
 Lcd.prototype.noCursor = function () {
-  this.displayControl &= __COMMANDS.CURSOR_OFF;
+  this.displayControl &= COMMANDS.CURSOR_OFF;
   this._command(this.displayControl);
 };
 
 Lcd.prototype.blink = function () {
-  this.displayControl |= __COMMANDS.BLINK_ON;
+  this.displayControl |= COMMANDS.BLINK_ON;
   this._command(this.displayControl);
 };
 
 Lcd.prototype.noBlink = function () {
-  this.displayControl &= __COMMANDS.BLINK_OFF;
+  this.displayControl &= COMMANDS.BLINK_OFF;
   this._command(this.displayControl);
 };
 
 Lcd.prototype.scrollDisplayLeft = function () {
-  this._command(__COMMANDS.SCROLL_LEFT);
+  this._command(COMMANDS.SCROLL_LEFT);
 };
 
 Lcd.prototype.scrollDisplayRight = function () {
-  this._command(__COMMANDS.SCROLL_RIGHT);
+  this._command(COMMANDS.SCROLL_RIGHT);
 };
 
 Lcd.prototype.leftToRight = function () {
-  this.displayMode |= __COMMANDS.LEFT_TO_RIGHT;
+  this.displayMode |= COMMANDS.LEFT_TO_RIGHT;
   this._command(this.displayMode);
 };
 
 Lcd.prototype.rightToLeft = function () {
-  this.displayMode &= __COMMANDS.RIGHT_TO_LEFT;
+  this.displayMode &= COMMANDS.RIGHT_TO_LEFT;
   this._command(this.displayMode);
 };
 
 Lcd.prototype.autoscroll = function () {
-  this.displayMode |= __COMMANDS.AUTOSCROLL_ON;
+  this.displayMode |= COMMANDS.AUTOSCROLL_ON;
   this._command(this.displayMode);
 };
 
 Lcd.prototype.noAutoscroll = function () {
-  this.displayMode &= __COMMANDS.AUTOSCROLL_OFF;
+  this.displayMode &= COMMANDS.AUTOSCROLL_OFF;
   this._command(this.displayMode);
 };
 
 Lcd.prototype.close = function () {
-  var i;
-
   this.rs.unexport();
   this.e.unexport();
-
-  for (i = 0; i < this.data.length; i += 1) {
-    this.data[i].unexport();
-  }
+  this.data.forEach(gpio => gpio.unexport());
 };
 
 // private
@@ -277,8 +263,6 @@ Lcd.prototype._write4Bits = function (val) {
   }
 
   // enable pulse >= 300ns
-  // writeSync takes ~10 microseconds to execute on the BBB, so there's
-  // nothing special needed to wait 300 nanoseconds.
   this.e.writeSync(1);
   this.e.writeSync(0);
 };
