@@ -3,6 +3,7 @@ Unpublished
 
   * take microsecond execution times into account
   * use native promises
+  * implement Lcd as class
 
 2.0.0 - Feb 27 2018
 ===================
