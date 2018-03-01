@@ -3,7 +3,6 @@
 const EventEmitter = require('events').EventEmitter,
   Gpio = require('onoff').Gpio,
   mutexify = require('mutexify'),
-  Q = require('q'),
   util = require('util');
 
 const ROW_OFFSETS = [0x00, 0x40, 0x14, 0x54];
@@ -25,6 +24,9 @@ const COMMANDS = {
   AUTOSCROLL_ON: 0x01,
   AUTOSCROLL_OFF: ~0x01
 };
+
+const delay = (time, ...args) =>
+  new Promise(resolve => setTimeout(resolve, time, ...args));
 
 function sleepus(usDelay) {
   var startTime = process.hrtime();
@@ -64,14 +66,14 @@ util.inherits(Lcd, EventEmitter);
 module.exports = Lcd;
 
 Lcd.prototype._init = function () {
-  Q.delay(16)                                               // wait > 15ms
-  .then(function () { this._write4Bits(0x03); }.bind(this)) // 1st wake up
-  .delay(6)                                                 // wait > 4.1ms
-  .then(function () { this._write4Bits(0x03); }.bind(this)) // 2nd wake up
-  .delay(2)                                                 // wait > 160us
-  .then(function () { this._write4Bits(0x03); }.bind(this)) // 3rd wake up
-  .delay(2)                                                 // wait > 160us
-  .then(function () {
+  delay(16)                           // wait > 15ms
+  .then(() => this._write4Bits(0x03)) // 1st wake up
+  .then(() => delay(6))               // wait > 4.1ms
+  .then(() => this._write4Bits(0x03)) // 2nd wake up
+  .then(() => delay(2))               // wait > 160us
+  .then(() => this._write4Bits(0x03)) // 3rd wake up
+  .then(() => delay(2))               // wait > 160us
+  .then(() => {
     var displayFunction = 0x20;
 
     this._write4Bits(0x02); // 4 bit interface
@@ -89,9 +91,9 @@ Lcd.prototype._init = function () {
     this._command(this.displayMode);
 
     this._command(0x01); // clear display (don't call clear to avoid event)
-  }.bind(this))
-  .delay(3)             // wait > 1.52ms for display to clear
-  .then(function () { this.emit('ready'); }.bind(this));
+    return delay(3);     // wait > 1.52ms for display to clear
+  })
+  .then(() => this.emit('ready'));
 };
 
 Lcd.prototype.print = function (val, cb) {

@@ -5,30 +5,29 @@
  * overwritten. The tests below verify that this optimization functions
  * correctly.
  */
-var Lcd = require('../lcd'),
-  Q = require('q'),
-  lcd = new Lcd({rs: 23, e: 24, data: [17, 18, 22, 27], cols: 20, rows: 4});// Pi
+const Lcd = require('../lcd'),
+  lcd = new Lcd({rs: 23, e: 24, data: [17, 18, 22, 27], cols: 20, rows: 4});
 
-lcd.on('ready', function () {
-  Q.fcall(function () {
-    lcd.print('abc'); // 'abc'
-  })
-  .delay(1000)
-  .then(function () {
-    lcd.print(new Array(81).join('.') + 'abc'); // '...abc..'
-  })
-  .delay(1000)
-  .then(function () {
+const delay = (time, ...args) =>
+  new Promise(resolve => setTimeout(resolve, time, ...args));
+
+lcd.on('ready', () => {
+  Promise.resolve()
+  .then(() => lcd.print('abc')) // 'abc'
+  .then(() => delay(1000))
+  .then(() => lcd.print(new Array(81).join('.') + 'abc')) // '...abc..'
+  .then(() => delay(1000))
+  .then(() => {
     lcd.setCursor(0, 0);
     lcd.print(new Array(801).join('+') + 'abc'); // 'abc+++++'
   })
-  .delay(1000)
-  .then(function () {
+  .then(() => delay(1000))
+  .then(() => {
     lcd.setCursor(0, 0);
     lcd.print(new Array(800001).join('*') + '<Hello>'); // '<Hello>*'
   })
-  .delay(1000)
-  .then(function () {
+  .then(() => delay(1000))
+  .then(() => {
     lcd.setCursor(8, 0);
     lcd.autoscroll();
     lcd.print(new Array(801).join('+') + 'abc'); // '+++++abc'

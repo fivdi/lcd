@@ -19,8 +19,7 @@
   },
   "dependencies": {
     "onoff": "^2.0.0",
-    "mutexify": "^1.2.0",
-    "q": "^1.5.1"
+    "mutexify": "^1.2.0"
   },
   "devDependencies": {
     "async": "^2.6.0",
