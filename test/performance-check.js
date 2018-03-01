@@ -16,7 +16,7 @@ let iv;
 const fillDisplay = () => {
   lcd.print(new Array(20 * 4 + 1).join(String.fromCharCode(charCode)));
   charCode += 1;
-}
+};
 
 const printResults = () => {
   let seconds;
@@ -31,7 +31,7 @@ const printResults = () => {
 
   timeoutsPerSec = Math.floor(timeouts / seconds);
   console.log(timeoutsPerSec + ' timeouts per second');
-}
+};
 
 lcd.on('ready', () => {
   time = process.hrtime();

@@ -36,7 +36,7 @@ const sleepus = (usDelay) => {
     deltaTime = process.hrtime(startTime);
     usWaited = (deltaTime[0] * 1E9 + deltaTime[1]) / 1000;
   }
-}
+};
 
 class Lcd extends EventEmitter {
   constructor(config) {
