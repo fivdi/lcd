@@ -1,5 +1,5 @@
-Unpublished
-===========
+2.0.1 - Mar 01 2018
+===================
 
   * take microsecond execution times into account
   * use native promises
