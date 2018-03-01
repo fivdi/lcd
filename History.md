@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * take microsecond execution times into account
+
 2.0.0 - Feb 27 2018
 ===================
 

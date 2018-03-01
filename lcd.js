@@ -26,6 +26,17 @@ const COMMANDS = {
   AUTOSCROLL_OFF: ~0x01
 };
 
+function sleepus(usDelay) {
+  var startTime = process.hrtime();
+  var deltaTime;
+  var usWaited = 0;
+
+  while (usDelay > usWaited) {
+    deltaTime = process.hrtime(startTime);
+    usWaited = (deltaTime[0] * 1E9 + deltaTime[1]) / 1000;
+  }
+}
+
 function Lcd(config) {
   if (!(this instanceof Lcd)) {
     return new Lcd(config);
@@ -87,9 +98,9 @@ Lcd.prototype.print = function (val, cb) {
   this.lock(function (release) {
     val += '';
 
-    // If n*80+m characters should be printed, where n>1, m<80, don't display the
-    // first (n-1)*80 characters as they will be overwritten. For example, if
-    // asked to print 802 characters, don't display the first 720.
+    // If n*80+m characters should be printed, where n>1, m<80, don't display
+    // the first (n-1)*80 characters as they will be overwritten. For example,
+    // if asked to print 802 characters, don't display the first 720.
     const displayFills = Math.floor(val.length / 80);
     const index = displayFills > 1 ? (displayFills - 1) * 80 : 0;
 
@@ -135,8 +146,10 @@ Lcd.prototype.home = function (cb) {
 };
 
 Lcd.prototype.setCursor = function (col, row) {
-  const r = row > this.rows ? this.rows - 1 : row; //TODO: throw error instead? Seems like this could cause a silent bug.
-  //we don't check for column because scrolling is a possibility. Should we check if it's in range if scrolling is off?
+  const r = row > this.rows ? this.rows - 1 : row;
+  // TODO: throw error instead? Seems like this could cause a silent bug.
+  // we don't check for column because scrolling is a possibility. Should
+  // we check if it's in range if scrolling is off?
   this._command(COMMANDS.SET_CURSOR | (col + ROW_OFFSETS[r]));
 };
 
@@ -231,11 +244,21 @@ Lcd.prototype._commandAndDelay = function (command, timeout, event, cb) {
 };
 
 Lcd.prototype._command = function (cmd) {
+  // Maximum execution time
+  // HD44780                | 37us
+  // ST7066U                | 37us
+  // NHD-0420DZ-FL-YBW-33V3 | 39us
   this._send(cmd, 0);
+  sleepus(39);
 };
 
 Lcd.prototype._write = function (val) {
+  // Maximum execution time
+  // HD44780                | 37us
+  // ST7066U                | 37us
+  // NHD-0420DZ-FL-YBW-33V3 | 43us
   this._send(val, 1);
+  sleepus(43);
 };
 
 Lcd.prototype._send = function (val, mode) {
@@ -249,10 +272,12 @@ Lcd.prototype._write4Bits = function (val) {
     throw new Error("Value passed to ._write4Bits must be a number");
   }
 
-  this.data.forEach((gpio, i) => gpio.writeSync((val >> i) & 1));
-
-  // enable pulse >= 300ns
+  //                                         | HD44780 | ST7066U | Unit |
+  // Minium enable cycle time                |    1000 |    1200 |   ns |
+  // Minimum enable pulse width (high level) |     450 |     460 |   ns |
   this.e.writeSync(1);
+  this.data.forEach((gpio, i) => gpio.writeSync((val >> i) & 1));
   this.e.writeSync(0);
+  sleepus(1);
 };
 
