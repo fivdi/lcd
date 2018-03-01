@@ -8,8 +8,7 @@
 const Lcd = require('../lcd');
 const lcd = new Lcd({rs: 23, e: 24, data: [17, 18, 22, 27], cols: 20, rows: 4});
 
-const delay = (time, ...args) =>
-  new Promise(resolve => setTimeout(resolve, time, ...args));
+const delay = (time) => new Promise(resolve => setTimeout(resolve, time));
 
 lcd.on('ready', () => {
   Promise.resolve()

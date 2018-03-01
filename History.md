@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * restore support for node 4
+
 2.0.1 - Mar 01 2018
 ===================
 

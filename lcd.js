@@ -24,8 +24,7 @@ const COMMANDS = {
   AUTOSCROLL_OFF: ~0x01
 };
 
-const delay = (time, ...args) =>
-  new Promise(resolve => setTimeout(resolve, time, ...args));
+const delay = (time) => new Promise(resolve => setTimeout(resolve, time));
 
 const sleepus = (usDelay) => {
   let startTime = process.hrtime();
