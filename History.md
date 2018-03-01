@@ -1,5 +1,5 @@
-Unpublished
-===========
+2.0.2 - Mar 01 2018
+===================
 
   * restore support for node 4
 
