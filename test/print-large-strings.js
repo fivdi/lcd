@@ -5,8 +5,8 @@
  * overwritten. The tests below verify that this optimization functions
  * correctly.
  */
-const Lcd = require('../lcd'),
-  lcd = new Lcd({rs: 23, e: 24, data: [17, 18, 22, 27], cols: 20, rows: 4});
+const Lcd = require('../lcd');
+const lcd = new Lcd({rs: 23, e: 24, data: [17, 18, 22, 27], cols: 20, rows: 4});
 
 const delay = (time, ...args) =>
   new Promise(resolve => setTimeout(resolve, time, ...args));
