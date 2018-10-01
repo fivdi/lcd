@@ -1,8 +1,9 @@
-Unpublished
-===========
+2.0.4 - Oct 01 2018
+===================
 
   * cleanup
   * remove old test
+  * update dependencies (onoff v3.2.2)
 
 2.0.3 - Apr 07 2018
 ===================
