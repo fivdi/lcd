@@ -18,18 +18,11 @@
     "node": ">=4.0.0"
   },
   "dependencies": {
-    "onoff": "^3.0.2",
+    "onoff": "^3.2.2",
     "mutexify": "^1.2.0"
   },
   "devDependencies": {
-    "async": "^2.6.0",
-    "chai": "^2.1.0",
-    "grunt": "^0.4.5",
-    "grunt-contrib-jshint": "^0.11.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-mocha-test": "^0.12.7",
-    "mocha": "^2.1.0",
-    "sinon": "^1.12.2"
+    "async": "^2.6.1"
   },
   "keywords": [
     "lcd",

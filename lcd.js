@@ -263,7 +263,7 @@ class Lcd extends EventEmitter {
   }
 
   _write4Bits(val) {
-    if(!(typeof val === 'number')){
+    if(!(typeof val === 'number')) {
       throw new Error("Value passed to ._write4Bits must be a number");
     }
 

@@ -24,13 +24,13 @@ npm install lcd
 The following program can be used to make a UTC digital clock.
 
 ```js
-var Lcd = require('lcd'),
-  lcd = new Lcd({rs: 45, e: 44, data: [66, 67, 68, 69], cols: 8, rows: 1});
+const Lcd = require('lcd');
+const lcd = new Lcd({rs: 45, e: 44, data: [66, 67, 68, 69], cols: 8, rows: 1});
 
-lcd.on('ready', function () {
-  setInterval(function () {
+lcd.on('ready', () => {
+  setInterval(() => {
     lcd.setCursor(0, 0);
-    lcd.print(new Date().toISOString().substring(11, 19), function (err) {
+    lcd.print(new Date().toISOString().substring(11, 19), (err) => {
       if (err) {
         throw err;
       }
@@ -39,7 +39,7 @@ lcd.on('ready', function () {
 });
 
 // If ctrl+c is hit, free resources and exit.
-process.on('SIGINT', function () {
+process.on('SIGINT', () => {
   lcd.close();
   process.exit();
 });
@@ -174,35 +174,35 @@ character by character. Note that an 8x1 display actually has eighty columns
 but only eight of them are visible.
 
 ```js
-var Lcd = require('lcd'),
-  lcd = new Lcd({rs: 45, e: 44, data: [66, 67, 68, 69], cols: 8, rows: 1});
+const Lcd = require('../lcd');
+const lcd = new Lcd({rs: 45, e: 44, data: [66, 67, 68, 69], cols: 8, rows: 1});
 
-function print(str, pos) {
+const print = (str, pos) => {
   pos = pos || 0;
 
   if (pos === str.length) {
     pos = 0;
   }
 
-  lcd.print(str[pos], function (err) {
+  lcd.print(str[pos], (err) => {
     if (err) {
       throw err;
     }
 
-    setTimeout(function () {
+    setTimeout(() => {
       print(str, pos + 1);
     }, 300);
   });
 }
 
-lcd.on('ready', function () {
+lcd.on('ready', () => {
   lcd.setCursor(8, 0);
   lcd.autoscroll();
   print('Hello, World! ** ');
 });
 
 // If ctrl+c is hit, free resources and exit.
-process.on('SIGINT', function () {
+process.on('SIGINT', () => {
   lcd.close();
   process.exit();
 });
