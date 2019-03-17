@@ -3,6 +3,7 @@ Unpublished
 
   * update dependencies (onoff v4.1.1, async v2.6.2)
   * document node 12 support
+  * lint with jshint
 
 2.0.4 - Oct 01 2018
 ===================

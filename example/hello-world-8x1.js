@@ -19,7 +19,7 @@ const print = (str, pos) => {
       print(str, pos + 1);
     }, 300);
   });
-}
+};
 
 lcd.on('ready', () => {
   lcd.setCursor(8, 0);
