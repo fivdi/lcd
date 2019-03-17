@@ -263,8 +263,8 @@ class Lcd extends EventEmitter {
   }
 
   _write4Bits(val) {
-    if(!(typeof val === 'number')) {
-      throw new Error("Value passed to ._write4Bits must be a number");
+    if(typeof val !== 'number') {
+      throw new Error('Value passed to ._write4Bits must be a number');
     }
 
     //                                         | HD44780 | ST7066U | Unit |

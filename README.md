@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/fivdi/lcd.svg?branch=master)](https://travis-ci.org/fivdi/lcd)
+[![npm Version](http://img.shields.io/npm/v/lcd.svg)](https://www.npmjs.com/package/lcd)
+[![Downloads Per Month](http://img.shields.io/npm/dm/lcd.svg)](https://www.npmjs.com/package/lcd)
+
 ## lcd
 
 A **Node.js** Hitachi HD44780 LCD driver for Linux boards like the Raspberry Pi
@@ -11,7 +15,7 @@ Register select (RS), enable (E), and four data bus pins (D4-D7). The
 read/write (R/W) pin is assumed to be tied low to permanently select write
 mode.
 
-lcd supports Node.js versions 4, 6, 8 and 10.
+lcd supports Node.js versions 4, 6, 8, 10 and 12.
 
 ## Installation
 
@@ -193,7 +197,7 @@ const print = (str, pos) => {
       print(str, pos + 1);
     }, 300);
   });
-}
+};
 
 lcd.on('ready', () => {
   lcd.setCursor(8, 0);
