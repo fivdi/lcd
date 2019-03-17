@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/fivdi/lcd.svg?branch=master)](https://travis-ci.org/fivdi/lcd)
+[![npm Version](http://img.shields.io/npm/v/lcd.svg)](https://www.npmjs.com/package/lcd)
+[![Downloads Per Month](http://img.shields.io/npm/dm/lcd.svg)](https://www.npmjs.com/package/lcd)
+
 ## lcd
 
 A **Node.js** Hitachi HD44780 LCD driver for Linux boards like the Raspberry Pi
