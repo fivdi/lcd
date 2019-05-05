@@ -3,6 +3,7 @@
   "version": "2.0.5",
   "description": "Hitachi HD44780 LCD driver",
   "main": "lcd.js",
+  "types": "lcd.d.ts",
   "directories": {
     "example": "example",
     "test": "test"
@@ -23,6 +24,7 @@
     "mutexify": "^1.2.0"
   },
   "devDependencies": {
+    "@types/node": "^11.12.1",
     "async": "^2.6.2",
     "jshint": "^2.10.2"
   },
