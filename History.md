@@ -1,5 +1,5 @@
-Unpublished
-===========
+2.0.6 - Sep 08 2019
+===================
 
   * add node 12 to build
   * remove node 11 from build
