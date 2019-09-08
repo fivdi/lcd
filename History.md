@@ -3,6 +3,7 @@ Unpublished
 
   * add node 12 to build
   * remove node 11 from build
+  * update dependencies (onoff v4.1.4, async v3.1.0)
 
 2.0.5 - Mar 17 2019
 ===================
