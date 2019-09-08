@@ -1,3 +1,9 @@
+Unpublished
+===========
+
+  * add node 12 to build
+  * remove node 11 from build
+
 2.0.5 - Mar 17 2019
 ===================
 
