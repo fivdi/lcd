@@ -19,7 +19,7 @@
     "node": ">=4.0.0"
   },
   "dependencies": {
-    "onoff": "^4.1.4",
+    "onoff": "^5.0.0",
     "mutexify": "^1.2.0"
   },
   "devDependencies": {
