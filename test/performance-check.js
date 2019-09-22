@@ -13,12 +13,12 @@ let timeouts = 0;
 let time;
 let iv;
 
-const fillDisplay = () => {
+const fillDisplay = _ => {
   lcd.print(new Array(20 * 4 + 1).join(String.fromCharCode(charCode)));
   charCode += 1;
 };
 
-const printResults = () => {
+const printResults = _ => {
   let seconds;
   let displayFillsPerSec;
   let timeoutsPerSec;
@@ -33,13 +33,13 @@ const printResults = () => {
   console.log(timeoutsPerSec + ' timeouts per second');
 };
 
-lcd.on('ready', () => {
+lcd.on('ready',_ => {
   time = process.hrtime();
-  iv = setInterval(() => timeouts += 1, 1);
+  iv = setInterval(_ => timeouts += 1, 1);
   fillDisplay();
 });
 
-lcd.on('printed', () => {
+lcd.on('printed', _ => {
   if (charCode < 256) {
     fillDisplay();
   } else {

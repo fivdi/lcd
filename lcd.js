@@ -24,9 +24,9 @@ const COMMANDS = {
   AUTOSCROLL_OFF: ~0x01
 };
 
-const delay = (time) => new Promise(resolve => setTimeout(resolve, time));
+const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
-const sleepus = (usDelay) => {
+const sleepus = usDelay => {
   let startTime = process.hrtime();
   let deltaTime;
   let usWaited = 0;
@@ -59,13 +59,13 @@ class Lcd extends EventEmitter {
 
   _init() {
     delay(16)                           // wait > 15ms
-    .then(() => this._write4Bits(0x03)) // 1st wake up
-    .then(() => delay(6))               // wait > 4.1ms
-    .then(() => this._write4Bits(0x03)) // 2nd wake up
-    .then(() => delay(2))               // wait > 160us
-    .then(() => this._write4Bits(0x03)) // 3rd wake up
-    .then(() => delay(2))               // wait > 160us
-    .then(() => {
+    .then(_ => this._write4Bits(0x03)) // 1st wake up
+    .then(_ => delay(6))               // wait > 4.1ms
+    .then(_ => this._write4Bits(0x03)) // 2nd wake up
+    .then(_ => delay(2))               // wait > 160us
+    .then(_ => this._write4Bits(0x03)) // 3rd wake up
+    .then(_ => delay(2))               // wait > 160us
+    .then(_ => {
       let displayFunction = 0x20;
 
       this._write4Bits(0x02); // 4 bit interface
@@ -85,11 +85,11 @@ class Lcd extends EventEmitter {
       this._command(0x01); // clear display (don't call clear to avoid event)
       return delay(3);     // wait > 1.52ms for display to clear
     })
-    .then(() => this.emit('ready'));
+    .then(_ => this.emit('ready'));
   }
 
   print(val, cb) {
-    this.lock((release) => {
+    this.lock(release => {
       val += '';
 
       // If n*80+m characters should be printed, where n>1, m<80, don't
@@ -104,7 +104,7 @@ class Lcd extends EventEmitter {
   }
 
   _printChar(str, index, release, cb) {
-    setImmediate(() => {
+    setImmediate(_ => {
       if (index >= str.length) {
         if (cb) {
           cb(null, str);
@@ -213,7 +213,7 @@ class Lcd extends EventEmitter {
   }
 
   _commandAndDelay(command, timeout, event, cb) {
-    this.lock((release) => {
+    this.lock(release => {
       try {
         this._command(command);
       } catch (e) {
@@ -226,7 +226,7 @@ class Lcd extends EventEmitter {
         return release();
       }
 
-      setTimeout(() => {
+      setTimeout(_ => {
         if (cb) {
           cb(null);
         } else {

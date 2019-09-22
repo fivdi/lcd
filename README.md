@@ -31,10 +31,10 @@ The following program can be used to make a UTC digital clock.
 const Lcd = require('lcd');
 const lcd = new Lcd({rs: 45, e: 44, data: [66, 67, 68, 69], cols: 8, rows: 1});
 
-lcd.on('ready', () => {
-  setInterval(() => {
+lcd.on('ready', _ => {
+  setInterval(_ => {
     lcd.setCursor(0, 0);
-    lcd.print(new Date().toISOString().substring(11, 19), (err) => {
+    lcd.print(new Date().toISOString().substring(11, 19), err => {
       if (err) {
         throw err;
       }
@@ -43,7 +43,7 @@ lcd.on('ready', () => {
 });
 
 // If ctrl+c is hit, free resources and exit.
-process.on('SIGINT', () => {
+process.on('SIGINT', _ => {
   lcd.close();
   process.exit();
 });
@@ -188,25 +188,25 @@ const print = (str, pos) => {
     pos = 0;
   }
 
-  lcd.print(str[pos], (err) => {
+  lcd.print(str[pos], err => {
     if (err) {
       throw err;
     }
 
-    setTimeout(() => {
+    setTimeout(_ => {
       print(str, pos + 1);
     }, 300);
   });
 };
 
-lcd.on('ready', () => {
+lcd.on('ready', _ => {
   lcd.setCursor(8, 0);
   lcd.autoscroll();
   print('Hello, World! ** ');
 });
 
 // If ctrl+c is hit, free resources and exit.
-process.on('SIGINT', () => {
+process.on('SIGINT', _ => {
   lcd.close();
   process.exit();
 });

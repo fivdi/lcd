@@ -9,12 +9,12 @@ const Lcd = require('../lcd');
 const lcd = new Lcd({rs: 23, e: 24, data: [17, 18, 22, 27], cols: 20, rows: 4});
 let printed = 0;
 
-lcd.on('ready', () => {
+lcd.on('ready', _ => {
   lcd.print(new Array(40).join('a'));
   lcd.print(new Array(40).join('b'));
 });
 
-lcd.on('printed', () => {
+lcd.on('printed', _ => {
   printed += 1;
 
   if (printed === 2) {

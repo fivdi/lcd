@@ -10,25 +10,25 @@ const print = (str, pos) => {
     pos = 0;
   }
 
-  lcd.print(str[pos], (err) => {
+  lcd.print(str[pos], err => {
     if (err) {
       throw err;
     }
 
-    setTimeout(() => {
+    setTimeout(_ => {
       print(str, pos + 1);
     }, 300);
   });
 };
 
-lcd.on('ready', () => {
+lcd.on('ready', _ => {
   lcd.setCursor(8, 0);
   lcd.autoscroll();
   print('Hello, World! ** ');
 });
 
 // If ctrl+c is hit, free resources and exit.
-process.on('SIGINT', () => {
+process.on('SIGINT', _ => {
   lcd.close();
   process.exit();
 });

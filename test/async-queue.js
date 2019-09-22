@@ -9,10 +9,10 @@
 const Lcd = require('../lcd');
 const lcd = new Lcd({rs: 23, e: 24, data: [17, 18, 22, 27], cols: 20, rows: 4});
 
-lcd.on('ready', () => {
+lcd.on('ready', _ => {
   let prints = 0;
 
-  const linePrinted = () => {
+  const linePrinted = _ => {
     prints += 1;
     if (prints === 256) {
       lcd.close();
