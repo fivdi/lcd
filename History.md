@@ -2,6 +2,7 @@ Unpublished
 ===========
 
   * update dependencies (onoff v5.0.0)
+  * drop support for node.js v4
 
 2.0.6 - Sep 08 2019
 ===================
