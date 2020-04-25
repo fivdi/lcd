@@ -1,5 +1,5 @@
-Unpublished
-===========
+3.1.0 - Apr 25 2020
+===================
 
   * update dependencies (onoff v6.0.0, async v3.2.0, jshint v2.11.0)
   * drop support for node.js 6, add support for node.js 14
