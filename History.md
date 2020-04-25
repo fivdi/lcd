@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * update dependencies (onoff v6.0.0, async v3.2.0, jshint v2.11.0)
+
 3.0.0 - Sep 22 2019
 ===================
 
