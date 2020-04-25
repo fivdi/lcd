@@ -16,15 +16,15 @@
     "url": "https://github.com/fivdi/lcd.git"
   },
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=8.0.0"
   },
   "dependencies": {
-    "onoff": "^5.0.0",
+    "onoff": "^6.0.0",
     "mutexify": "^1.2.0"
   },
   "devDependencies": {
-    "async": "^3.1.0",
-    "jshint": "^2.10.2"
+    "async": "^3.2.0",
+    "jshint": "^2.11.0"
   },
   "keywords": [
     "lcd",
