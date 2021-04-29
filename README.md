@@ -5,8 +5,7 @@
 ## lcd
 
 A **Node.js** Hitachi HD44780 LCD driver for Linux boards like the Raspberry Pi
-Zero, 1, 2, or 3, BeagleBone, or BeagleBone Black. Heavily inspired by the
-Arduino
+or BeagleBone. Heavily inspired by the Arduino
 [LiquidCrystal library](http://arduino.cc/en/Tutorial/LiquidCrystal).
 
 Most LCDs compatible with the HD44780 have a sixteen pin interface. This
@@ -15,7 +14,7 @@ Register select (RS), enable (E), and four data bus pins (D4-D7). The
 read/write (R/W) pin is assumed to be tied low to permanently select write
 mode.
 
-lcd supports Node.js versions 8, 10, 12, 13 and 14.
+lcd supports Node.js versions 10, 12, 14, 15 and 16.
 
 ## Installation
 
