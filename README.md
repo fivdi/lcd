@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/fivdi/lcd.svg?branch=master)](https://travis-ci.org/fivdi/lcd)
+[![Build Status](https://app.travis-ci.com/fivdi/lcd.svg?branch=master)](https://app.travis-ci.com/github/fivdi/lcd)
 [![npm Version](http://img.shields.io/npm/v/lcd.svg)](https://www.npmjs.com/package/lcd)
 [![Downloads Per Month](http://img.shields.io/npm/dm/lcd.svg)](https://www.npmjs.com/package/lcd)
 
